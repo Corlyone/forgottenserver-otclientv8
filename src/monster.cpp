@@ -85,20 +85,6 @@ bool Monster::canSee(const Position& pos) const
 	return Creature::canSee(getPosition(), pos, 9, 9);
 }
 
-bool Monster::canWalkOnFieldType(CombatType_t combatType) const
-{
-	switch (combatType) {
-		case COMBAT_ENERGYDAMAGE:
-			return mType->info.canWalkOnEnergy;
-		case COMBAT_FIREDAMAGE:
-			return mType->info.canWalkOnFire;
-		case COMBAT_EARTHDAMAGE:
-			return mType->info.canWalkOnPoison;
-		default:
-			return true;
-	}
-}
-
 void Monster::onAttackedCreatureDisappear(bool)
 {
 	attackTicks = 0;
@@ -683,7 +669,6 @@ void Monster::onAddCondition(ConditionType_t type)
 void Monster::onEndCondition(ConditionType_t type)
 {
 	if (type == CONDITION_FIRE || type == CONDITION_ENERGY || type == CONDITION_POISON) {
-		ignoreFieldDamage = false;
 		updateMapCache();
 	}
 
@@ -1135,10 +1120,6 @@ bool Monster::getNextStep(Direction& direction, uint32_t& flags)
 		if (result) {
 			flags |= FLAG_PATHFINDING;
 		} else {
-			if (ignoreFieldDamage) {
-				ignoreFieldDamage = false;
-				updateMapCache();
-			}
 			//target dancing
 			if (attackedCreature && attackedCreature == followCreature) {
 				if (isFleeing()) {
@@ -1935,7 +1916,6 @@ void Monster::drainHealth(Creature* attacker, int32_t damage)
 	Creature::drainHealth(attacker, damage);
 
 	if (damage > 0 && randomStepping) {
-		ignoreFieldDamage = true;
 		updateMapCache();
 	}
 

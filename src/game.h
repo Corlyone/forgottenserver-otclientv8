@@ -333,7 +333,6 @@ class Game
 		void playerMoveItemByPlayerID(uint32_t playerId, const Position& fromPos, uint16_t spriteId, uint8_t fromStackPos, const Position& toPos, uint8_t count);
 		void playerMoveItem(Player* player, const Position& fromPos,
 		                    uint16_t spriteId, uint8_t fromStackPos, const Position& toPos, uint8_t count, Item* item, Cylinder* toCylinder);
-		void playerEquipItem(uint32_t playerId, uint16_t spriteId);
 		void playerMove(uint32_t playerId, Direction direction);
 		void playerCreatePrivateChannel(uint32_t playerId);
 		void playerChannelInvite(uint32_t playerId, const std::string& name);
@@ -342,9 +341,7 @@ class Game
 		void playerOpenChannel(uint32_t playerId, uint16_t channelId);
 		void playerCloseChannel(uint32_t playerId, uint16_t channelId);
 		void playerOpenPrivateChannel(uint32_t playerId, std::string& receiver);
-		void playerCloseNpcChannel(uint32_t playerId);
 		void playerReceivePing(uint32_t playerId);
-		void playerReceivePingBack(uint32_t playerId);
 		void playerReceiveNewPing(uint32_t playerId, uint16_t ping, uint16_t fps);
 		void playerAutoWalk(uint32_t playerId, const std::list<Direction>& listDir);
 		void playerNewWalk(uint32_t playerId, Position pos, uint8_t flags, std::list<Direction> listDir);
@@ -358,7 +355,6 @@ class Game
 		void playerUpdateContainer(uint32_t playerId, uint8_t cid);
 		void playerRotateItem(uint32_t playerId, const Position& pos, uint8_t stackPos, const uint16_t spriteId);
 		void playerWriteItem(uint32_t playerId, uint32_t windowTextId, const std::string& text);
-		void playerBrowseField(uint32_t playerId, const Position& pos);
 		void playerSeekInContainer(uint32_t playerId, uint8_t containerId, uint16_t index);
 		void playerUpdateHouseWindow(uint32_t playerId, uint8_t listId, uint32_t windowTextId, const std::string& text);
 		void playerWrapItem(uint32_t playerId, const Position& position, uint8_t stackPos, const uint16_t spriteId);
@@ -395,7 +391,6 @@ class Game
 		void playerPassPartyLeadership(uint32_t playerId, uint32_t newLeaderId);
 		void playerLeaveParty(uint32_t playerId);
 		void playerEnableSharedPartyExperience(uint32_t playerId, bool sharedExpActive);
-		void playerToggleOutfitExtension(uint32_t playerId, int mount, int wings, int aura, int shader);
 		void playerLeaveMarket(uint32_t playerId);
 		void playerBrowseMarket(uint32_t playerId, uint16_t spriteId);
 		void playerBrowseMarketOwnOffers(uint32_t playerId);
@@ -425,9 +420,6 @@ class Game
 		void changeLight(const Creature* creature);
 		void updateCreatureSkull(const Creature* creature);
 		void updatePlayerShield(Player* player);
-		void updatePlayerHelpers(const Player& player);
-		void updateCreatureType(Creature* creature);
-		void updateCreatureWalkthrough(const Creature* creature);
 
 		GameState_t getGameState() const;
 		void setGameState(GameState_t newState);
@@ -450,6 +442,8 @@ class Game
 		//animation help functions
 		void addCreatureHealth(const Creature* target);
 		static void addCreatureHealth(const SpectatorVec& spectators, const Creature* target);
+		void addColoredText(const ColoredText& coloredText);
+		static void addColoredText(const SpectatorVec& spectators, const ColoredText& coloredText);
 		void addMagicEffect(const Position& pos, uint8_t effect);
 		static void addMagicEffect(const SpectatorVec& spectators, const Position& pos, uint8_t effect);
 		void addDistanceEffect(const Position& fromPos, const Position& toPos, uint8_t effect);
@@ -469,8 +463,6 @@ class Game
 		uint32_t getMotdNum() const { return motdNum; }
 		void incrementMotdNum() { motdNum++; }
 
-		void sendOfflineTrainingDialog(Player* player);
-
 		const std::unordered_map<uint32_t, Player*>& getPlayers() const { return players; }
 		const std::map<uint32_t, Npc*>& getNpcs() const { return npcs; }
 
@@ -486,9 +478,6 @@ class Game
 		Guild* getGuild(uint32_t id) const;
 		void addGuild(Guild* guild);
 		void removeGuild(uint32_t guildId);
-		void decreaseBrowseFieldRef(const Position& pos);
-
-		std::unordered_map<Tile*, Container*> browseFields;
 
 		void internalRemoveItems(std::vector<Item*> itemList, uint32_t amount, bool stackable);
 
@@ -504,14 +493,10 @@ class Game
 
 		void startProgressbar(Creature* creature, uint32_t duration, bool ltr = true);
 
-		Auras auras;
 		Groups groups;
 		Map map;		
-		Mounts mounts;
 		Raids raids;
 		Quests quests;
-		Wings wings;
-		Shaders shaders;
 
 		std::forward_list<Item*> toDecayItems;
 
@@ -533,7 +518,6 @@ class Game
 		void playerWhisper(Player* player, const std::string& text);
 		bool playerYell(Player* player, const std::string& text);
 		bool playerSpeakTo(Player* player, SpeakClasses type, const std::string& receiver, const std::string& text);
-		void playerSpeakToNpc(Player* player, const std::string& text);
 
 		void checkDecay();
 		void internalDecayItem(Item* item);
@@ -565,7 +549,6 @@ class Game
 
 		std::unordered_set<Tile*> tilesToClean;
 
-		ModalWindow offlineTrainingWindow { std::numeric_limits<uint32_t>::max(), "Choose a Skill", "Please choose a skill:" };
 
 		static constexpr int32_t LIGHT_LEVEL_DAY = 250;
 		static constexpr int32_t LIGHT_LEVEL_NIGHT = 40;

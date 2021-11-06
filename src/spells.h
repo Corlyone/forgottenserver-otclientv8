@@ -417,13 +417,13 @@ class RuneSpell final : public Action, public Spell
 			return targetCreature;
 		}
 
-		bool executeUse(Player* player, Item* item, const Position& fromPosition, Thing* target, const Position& toPosition, bool isHotkey) override;
+		bool executeUse(Player* player, Item* item, const Position& fromPosition, Thing* target, const Position& toPosition) override;
 
 		bool castSpell(Creature* creature) override;
 		bool castSpell(Creature* creature, Creature* target) override;
 
 		//scripting
-		bool executeCastSpell(Creature* creature, const LuaVariant& var, bool isHotkey);
+		bool executeCastSpell(Creature* creature, const LuaVariant& var);
 
 		bool isInstant() const override {
 			return false;
@@ -447,7 +447,7 @@ class RuneSpell final : public Action, public Spell
 	private:
 		std::string getScriptEventName() const override;
 
-		bool internalCastSpell(Creature* creature, const LuaVariant& var, bool isHotkey);
+		bool internalCastSpell(Creature* creature, const LuaVariant& var);
 
 		uint16_t runeId = 0;
 		uint32_t charges = 0;

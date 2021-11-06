@@ -93,12 +93,6 @@ const std::unordered_map<std::string, ItemParseAttributes_t> ItemParseAttributes
 	{"magicpoints", ITEM_PARSE_MAGICPOINTS},
 	{"magiclevelpoints", ITEM_PARSE_MAGICPOINTS},
 	{"magicpointspercent", ITEM_PARSE_MAGICPOINTSPERCENT},
-	{"criticalhitchance", ITEM_PARSE_CRITICALHITCHANCE},
-	{"criticalhitamount", ITEM_PARSE_CRITICALHITAMOUNT},
-	{"lifeleechchance", ITEM_PARSE_LIFELEECHCHANCE},
-	{"lifeleechamount", ITEM_PARSE_LIFELEECHAMOUNT},
-	{"manaleechchance", ITEM_PARSE_MANALEECHCHANCE},
-	{"manaleechamount", ITEM_PARSE_MANALEECHAMOUNT},
 	{"fieldabsorbpercentenergy", ITEM_PARSE_FIELDABSORBPERCENTENERGY},
 	{"fieldabsorbpercentfire", ITEM_PARSE_FIELDABSORBPERCENTFIRE},
 	{"fieldabsorbpercentpoison", ITEM_PARSE_FIELDABSORBPERCENTPOISON},
@@ -111,12 +105,9 @@ const std::unordered_map<std::string, ItemParseAttributes_t> ItemParseAttributes
 	{"absorbpercentfire", ITEM_PARSE_ABSORBPERCENTFIRE},
 	{"absorbpercentpoison", ITEM_PARSE_ABSORBPERCENTPOISON},
 	{"absorbpercentearth", ITEM_PARSE_ABSORBPERCENTPOISON},
-	{"absorbpercentice", ITEM_PARSE_ABSORBPERCENTICE},
-	{"absorbpercentholy", ITEM_PARSE_ABSORBPERCENTHOLY},
 	{"absorbpercentdeath", ITEM_PARSE_ABSORBPERCENTDEATH},
 	{"absorbpercentlifedrain", ITEM_PARSE_ABSORBPERCENTLIFEDRAIN},
 	{"absorbpercentmanadrain", ITEM_PARSE_ABSORBPERCENTMANADRAIN},
-	{"absorbpercentdrown", ITEM_PARSE_ABSORBPERCENTDROWN},
 	{"absorbpercentphysical", ITEM_PARSE_ABSORBPERCENTPHYSICAL},
 	{"absorbpercenthealing", ITEM_PARSE_ABSORBPERCENTHEALING},
 	{"absorbpercentundefined", ITEM_PARSE_ABSORBPERCENTUNDEFINED},
@@ -124,11 +115,6 @@ const std::unordered_map<std::string, ItemParseAttributes_t> ItemParseAttributes
 	{"suppressenergy", ITEM_PARSE_SUPPRESSENERGY},
 	{"suppressfire", ITEM_PARSE_SUPPRESSFIRE},
 	{"suppresspoison", ITEM_PARSE_SUPPRESSPOISON},
-	{"suppressdrown", ITEM_PARSE_SUPPRESSDROWN},
-	{"suppressphysical", ITEM_PARSE_SUPPRESSPHYSICAL},
-	{"suppressfreeze", ITEM_PARSE_SUPPRESSFREEZE},
-	{"suppressdazzle", ITEM_PARSE_SUPPRESSDAZZLE},
-	{"suppresscurse", ITEM_PARSE_SUPPRESSCURSE},
 	{"field", ITEM_PARSE_FIELD},
 	{"replaceable", ITEM_PARSE_REPLACEABLE},
 	{"partnerdirection", ITEM_PARSE_PARTNERDIRECTION},
@@ -203,10 +189,9 @@ const std::unordered_map<std::string, FluidTypes_t> FluidTypesMap = {
 	{"coconut", FLUID_COCONUTMILK},
 	{"wine", FLUID_WINE},
 	{"mud", FLUID_MUD},
-	{"fruitjuice", FLUID_FRUITJUICE},
+	{"fruit juice", FLUID_FRUITJUICE},
 	{"lava", FLUID_LAVA},
 	{"rum", FLUID_RUM},
-	{"swamp", FLUID_SWAMP},
 	{"tea", FLUID_TEA},
 	{"mead", FLUID_MEAD},
 };
@@ -286,10 +271,10 @@ bool Items::loadFromOtb(const std::string& file)
 
 	if (majorVersion == 0xFFFFFFFF) {
 		std::cout << "[Warning - Items::loadFromOtb] items.otb using generic client version." << std::endl;
-	} else if (majorVersion != 3) {
+	/*} else if (majorVersion != 3) {
 		std::cout << "Old version detected, a newer version of items.otb is required." << std::endl;
-		return false;
-	} else if (minorVersion < CLIENT_VERSION_1098) {
+		return false;*/
+	} else if (minorVersion < CLIENT_VERSION_760) {
 		std::cout << "A newer version of items.otb is required." << std::endl;
 		return false;
 	}
@@ -928,36 +913,6 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 					break;
 				}
 
-				case ITEM_PARSE_CRITICALHITAMOUNT: {
-					abilities.specialSkills[SPECIALSKILL_CRITICALHITAMOUNT] = pugi::cast<int32_t>(valueAttribute.value());
-					break;
-				}
-
-				case ITEM_PARSE_CRITICALHITCHANCE: {
-					abilities.specialSkills[SPECIALSKILL_CRITICALHITCHANCE] = pugi::cast<int32_t>(valueAttribute.value());
-					break;
-				}
-
-				case ITEM_PARSE_MANALEECHAMOUNT: {
-					abilities.specialSkills[SPECIALSKILL_MANALEECHAMOUNT] = pugi::cast<int32_t>(valueAttribute.value());
-					break;
-				}
-
-				case ITEM_PARSE_MANALEECHCHANCE: {
-					abilities.specialSkills[SPECIALSKILL_MANALEECHCHANCE] = pugi::cast<int32_t>(valueAttribute.value());
-					break;
-				}
-
-				case ITEM_PARSE_LIFELEECHAMOUNT: {
-					abilities.specialSkills[SPECIALSKILL_LIFELEECHAMOUNT] = pugi::cast<int32_t>(valueAttribute.value());
-					break;
-				}
-
-				case ITEM_PARSE_LIFELEECHCHANCE: {
-					abilities.specialSkills[SPECIALSKILL_LIFELEECHCHANCE] = pugi::cast<int32_t>(valueAttribute.value());
-					break;
-				}
-
 				case ITEM_PARSE_MAXHITPOINTS: {
 					abilities.stats[STAT_MAXHITPOINTS] = pugi::cast<int32_t>(valueAttribute.value());
 					break;
@@ -1016,7 +971,6 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 					abilities.absorbPercent[combatTypeToIndex(COMBAT_ENERGYDAMAGE)] += value;
 					abilities.absorbPercent[combatTypeToIndex(COMBAT_FIREDAMAGE)] += value;
 					abilities.absorbPercent[combatTypeToIndex(COMBAT_EARTHDAMAGE)] += value;
-					abilities.absorbPercent[combatTypeToIndex(COMBAT_ICEDAMAGE)] += value;
 					break;
 				}
 
@@ -1025,8 +979,6 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 					abilities.absorbPercent[combatTypeToIndex(COMBAT_ENERGYDAMAGE)] += value;
 					abilities.absorbPercent[combatTypeToIndex(COMBAT_FIREDAMAGE)] += value;
 					abilities.absorbPercent[combatTypeToIndex(COMBAT_EARTHDAMAGE)] += value;
-					abilities.absorbPercent[combatTypeToIndex(COMBAT_ICEDAMAGE)] += value;
-					abilities.absorbPercent[combatTypeToIndex(COMBAT_HOLYDAMAGE)] += value;
 					abilities.absorbPercent[combatTypeToIndex(COMBAT_DEATHDAMAGE)] += value;
 					break;
 				}
@@ -1046,16 +998,6 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 					break;
 				}
 
-				case ITEM_PARSE_ABSORBPERCENTICE: {
-					abilities.absorbPercent[combatTypeToIndex(COMBAT_ICEDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
-					break;
-				}
-
-				case ITEM_PARSE_ABSORBPERCENTHOLY: {
-					abilities.absorbPercent[combatTypeToIndex(COMBAT_HOLYDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
-					break;
-				}
-
 				case ITEM_PARSE_ABSORBPERCENTDEATH: {
 					abilities.absorbPercent[combatTypeToIndex(COMBAT_DEATHDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
 					break;
@@ -1068,11 +1010,6 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 
 				case ITEM_PARSE_ABSORBPERCENTMANADRAIN: {
 					abilities.absorbPercent[combatTypeToIndex(COMBAT_MANADRAIN)] += pugi::cast<int16_t>(valueAttribute.value());
-					break;
-				}
-
-				case ITEM_PARSE_ABSORBPERCENTDROWN: {
-					abilities.absorbPercent[combatTypeToIndex(COMBAT_DROWNDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
 					break;
 				}
 
@@ -1119,41 +1056,6 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 					break;
 				}
 
-				case ITEM_PARSE_SUPPRESSDROWN: {
-					if (valueAttribute.as_bool()) {
-						abilities.conditionSuppressions |= CONDITION_DROWN;
-					}
-					break;
-				}
-
-				case ITEM_PARSE_SUPPRESSPHYSICAL: {
-					if (valueAttribute.as_bool()) {
-						abilities.conditionSuppressions |= CONDITION_BLEEDING;
-					}
-					break;
-				}
-
-				case ITEM_PARSE_SUPPRESSFREEZE: {
-					if (valueAttribute.as_bool()) {
-						abilities.conditionSuppressions |= CONDITION_FREEZING;
-					}
-					break;
-				}
-
-				case ITEM_PARSE_SUPPRESSDAZZLE: {
-					if (valueAttribute.as_bool()) {
-						abilities.conditionSuppressions |= CONDITION_DAZZLED;
-					}
-					break;
-				}
-
-				case ITEM_PARSE_SUPPRESSCURSE: {
-					if (valueAttribute.as_bool()) {
-						abilities.conditionSuppressions |= CONDITION_CURSED;
-					}
-					break;
-				}
-
 				case ITEM_PARSE_FIELD: {
 					it.group = ITEM_GROUP_MAGICFIELD;
 					it.type = ITEM_TYPE_MAGICFIELD;
@@ -1171,12 +1073,6 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 					} else if (tmpStrValue == "poison") {
 						conditionDamage = new ConditionDamage(CONDITIONID_COMBAT, CONDITION_POISON);
 						combatType = COMBAT_EARTHDAMAGE;
-					} else if (tmpStrValue == "drown") {
-						conditionDamage = new ConditionDamage(CONDITIONID_COMBAT, CONDITION_DROWN);
-						combatType = COMBAT_DROWNDAMAGE;
-					} else if (tmpStrValue == "physical") {
-						conditionDamage = new ConditionDamage(CONDITIONID_COMBAT, CONDITION_BLEEDING);
-						combatType = COMBAT_PHYSICALDAMAGE;
 					} else {
 						std::cout << "[Warning - Items::parseItemNode] Unknown field value: " << valueAttribute.as_string() << std::endl;
 					}
@@ -1284,12 +1180,6 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 
 				case ITEM_PARSE_DESTROYTO: {
 					it.destroyTo = pugi::cast<uint16_t>(valueAttribute.value());
-					break;
-				}
-
-				case ITEM_PARSE_ELEMENTICE: {
-					abilities.elementDamage = pugi::cast<uint16_t>(valueAttribute.value());
-					abilities.elementType = COMBAT_ICEDAMAGE;
 					break;
 				}
 

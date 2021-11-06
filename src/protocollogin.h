@@ -31,7 +31,6 @@ class ProtocolLogin : public Protocol
 		// static protocol information
 		enum {server_sends_first = false};
 		enum {protocol_identifier = 0x01};
-		enum {use_checksum = true};
 		static const char* protocol_name() {
 			return "login protocol";
 		}
@@ -43,7 +42,7 @@ class ProtocolLogin : public Protocol
 	private:
 		void disconnectClient(const std::string& message, uint16_t version);
 
-		void getCharacterList(const std::string& accountName, const std::string& password, const std::string& token, uint16_t version);
+		void getCharacterList(uint32_t accountNumber, const std::string& password, uint16_t version);
 };
 
 #endif

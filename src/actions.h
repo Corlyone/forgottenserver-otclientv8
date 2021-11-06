@@ -26,7 +26,7 @@
 
 class Action;
 using Action_ptr = std::unique_ptr<Action>;
-using ActionFunction = std::function<bool(Player* player, Item* item, const Position& fromPosition, Thing* target, const Position& toPosition, bool isHotkey)>;
+using ActionFunction = std::function<bool(Player* player, Item* item, const Position& fromPosition, Thing* target, const Position& toPosition)>;
 
 class Action : public Event
 {
@@ -38,7 +38,7 @@ class Action : public Event
 
 		//scripting
 		virtual bool executeUse(Player* player, Item* item, const Position& fromPosition,
-			Thing* target, const Position& toPosition, bool isHotkey);
+			Thing* target, const Position& toPosition);
 
 		bool getAllowFarUse() const {
 			return allowFarUse;
@@ -111,8 +111,8 @@ class Actions final : public BaseEvents
 		Actions(const Actions&) = delete;
 		Actions& operator=(const Actions&) = delete;
 
-		bool useItem(Player* player, const Position& pos, uint8_t index, Item* item, bool isHotkey);
-		bool useItemEx(Player* player, const Position& fromPos, const Position& toPos, uint8_t toStackPos, Item* item, bool isHotkey, Creature* creature = nullptr);
+		bool useItem(Player* player, const Position& pos, uint8_t index, Item* item);
+		bool useItemEx(Player* player, const Position& fromPos, const Position& toPos, uint8_t toStackPos, Item* item, Creature* creature = nullptr);
 
 		ReturnValue canUse(const Player* player, const Position& pos);
 		ReturnValue canUse(const Player* player, const Position& pos, const Item* item);
@@ -122,8 +122,7 @@ class Actions final : public BaseEvents
 		void clear(bool fromLua) override final;
 
 	private:
-		ReturnValue internalUseItem(Player* player, const Position& pos, uint8_t index, Item* item, bool isHotkey);
-		static void showUseHotkeyMessage(Player* player, const Item* item, uint32_t count);
+		ReturnValue internalUseItem(Player* player, const Position& pos, uint8_t index, Item* item);
 
 		LuaScriptInterface& getScriptInterface() override;
 		std::string getScriptBaseName() const override;

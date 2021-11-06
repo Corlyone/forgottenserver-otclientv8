@@ -73,12 +73,6 @@ Item* Item::CreateItem(const uint16_t type, uint16_t count /*= 0*/)
 			newItem = new Item(type - 2, count);
 		} else if (it.id >= 2202 && it.id <= 2206) {
 			newItem = new Item(type - 37, count);
-		} else if (it.id == 2640) {
-			newItem = new Item(6132, count);
-		} else if (it.id == 6301) {
-			newItem = new Item(6300, count);
-		} else if (it.id == 18528) {
-			newItem = new Item(18408, count);
 		} else {
 			newItem = new Item(type, count);
 		}
@@ -1011,21 +1005,6 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 				}
 
 				s << getSkillName(i) << ' ' << std::showpos << it.abilities->skills[i] << std::noshowpos;
-			}
-
-			for (uint8_t i = SPECIALSKILL_FIRST; i <= SPECIALSKILL_LAST; i++) {
-				if (!it.abilities->specialSkills[i]) {
-					continue;
-				}
-
-				if (begin) {
-					begin = false;
-					s << " (";
-				} else {
-					s << ", ";
-				}
-
-				s << getSpecialSkillName(i) << ' ' << std::showpos << it.abilities->specialSkills[i] << '%' << std::noshowpos;
 			}
 
 			if (it.abilities->stats[STAT_MAGICPOINTS]) {

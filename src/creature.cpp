@@ -25,10 +25,6 @@
 #include "configmanager.h"
 #include "scheduler.h"
 
-double Creature::speedA = 857.36;
-double Creature::speedB = 261.29;
-double Creature::speedC = -4795.01;
-
 extern Game g_game;
 extern ConfigManager g_config;
 extern CreatureEvents* g_creatureEvents;
@@ -458,6 +454,10 @@ void Creature::onCreatureMove(Creature* creature, const Tile* newTile, const Pos
 	if (creature == this) {
 		lastStep = OTSYS_TIME();
 		lastStepCost = 1;
+		
+		if (Player* player = getPlayer()) {
+			player->setCurrentTileHeight(newTile->getHeight());
+		}
 
 		if (!teleport) {
 			if (oldPos.z != newPos.z) {
@@ -1031,21 +1031,6 @@ void Creature::onTickCondition(ConditionType_t type, bool& bRemove)
 		case CONDITION_POISON:
 			bRemove = (field->getCombatType() != COMBAT_EARTHDAMAGE);
 			break;
-		case CONDITION_FREEZING:
-			bRemove = (field->getCombatType() != COMBAT_ICEDAMAGE);
-			break;
-		case CONDITION_DAZZLED:
-			bRemove = (field->getCombatType() != COMBAT_HOLYDAMAGE);
-			break;
-		case CONDITION_CURSED:
-			bRemove = (field->getCombatType() != COMBAT_DEATHDAMAGE);
-			break;
-		case CONDITION_DROWN:
-			bRemove = (field->getCombatType() != COMBAT_DROWNDAMAGE);
-			break;
-		case CONDITION_BLEEDING:
-			bRemove = (field->getCombatType() != COMBAT_PHYSICALDAMAGE);
-			break;
 		default:
 			break;
 	}
@@ -1095,13 +1080,12 @@ void Creature::onGainExperience(uint64_t gainExp, Creature* target)
 		return;
 	}
 
-	TextMessage message(MESSAGE_EXPERIENCE_OTHERS, ucfirst(getNameDescription()) + " gained " + std::to_string(gainExp) + (gainExp != 1 ? " experience points." : " experience point."));
-	message.position = position;
-	message.primary.color = TEXTCOLOR_WHITE_EXP;
-	message.primary.value = gainExp;
+	TextMessage message(MESSAGE_STATUS_SMALL, ucfirst(getNameDescription()) + " gained " + std::to_string(gainExp) + (gainExp != 1 ? " experience points." : " experience point."));
+	ColoredText coloredText(std::to_string(gainExp), position, TEXTCOLOR_WHITE_EXP);
 
 	for (Creature* spectator : spectators) {
 		spectator->getPlayer()->sendTextMessage(message);
+		spectator->getPlayer()->sendColoredText(coloredText);
 	}
 }
 
@@ -1341,7 +1325,7 @@ int64_t Creature::getStepDuration(Direction dir) const
 {
 	int64_t stepDuration = getStepDuration();
 	if ((dir & DIRECTION_DIAGONAL_MASK) != 0) {
-		stepDuration *= 3;
+		stepDuration *= 2;
 	}
 	return stepDuration;
 }
@@ -1352,31 +1336,12 @@ int64_t Creature::getStepDuration(bool forAnimation) const
 		return 0;
 	}
 
-	uint32_t calculatedStepSpeed;
-	uint32_t groundSpeed;
-
-	int32_t stepSpeed = getStepSpeed();
-	if (stepSpeed > -Creature::speedB) {
-		calculatedStepSpeed = floor((Creature::speedA * log((stepSpeed / 2) + Creature::speedB) + Creature::speedC) + 0.5);
-		if (calculatedStepSpeed == 0) {
-			calculatedStepSpeed = 1;
-		}
-	} else {
-		calculatedStepSpeed = 1;
-	}
-
 	Item* ground = tile->getGround();
-	if (ground) {
-		groundSpeed = Item::items[ground->getID()].speed;
-		if (groundSpeed == 0) {
-			groundSpeed = 150;
-		}
-	} else {
-		groundSpeed = 150;
+	if (!ground) {
+		return 0;
 	}
 
-	double duration = std::floor(1000 * groundSpeed / calculatedStepSpeed);
-	int64_t stepDuration = duration;
+	int64_t stepDuration = Item::items[ground->getID()].speed * 1000 / getStepSpeed() * lastStepCost;
 
 	if (!forAnimation) {
 		const Monster* monster = getMonster();

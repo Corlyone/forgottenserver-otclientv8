@@ -86,9 +86,7 @@ bool Events::load()
 				std::cout << "[Warning - Events::load] Unknown party method: " << methodName << std::endl;
 			}
 		} else if (className == "Player") {
-			if (methodName == "onBrowseField") {
-				info.playerOnBrowseField = event;
-			} else if (methodName == "onLook") {
+			if (methodName == "onLook") {
 				info.playerOnLook = event;
 			} else if (methodName == "onLookInBattleList") {
 				info.playerOnLookInBattleList = event;
@@ -422,31 +420,6 @@ void Events::eventPartyOnShareExperience(Party* party, uint64_t& exp)
 }
 
 // Player
-bool Events::eventPlayerOnBrowseField(Player* player, const Position& position)
-{
-	// Player:onBrowseField(position) or Player.onBrowseField(self, position)
-	if (info.playerOnBrowseField == -1) {
-		return true;
-	}
-
-	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnBrowseField] Call stack overflow" << std::endl;
-		return false;
-	}
-
-	ScriptEnvironment* env = scriptInterface.getScriptEnv();
-	env->setScriptId(info.playerOnBrowseField, &scriptInterface);
-
-	lua_State* L = scriptInterface.getLuaState();
-	scriptInterface.pushFunction(info.playerOnBrowseField);
-
-	LuaScriptInterface::pushUserdata<Player>(L, player);
-	LuaScriptInterface::setMetatable(L, -1, "Player");
-
-	LuaScriptInterface::pushPosition(L, position);
-
-	return scriptInterface.callFunction(2);
-}
 
 void Events::eventPlayerOnLook(Player* player, const Position& position, Thing* thing, uint8_t stackpos, int32_t lookDistance)
 {

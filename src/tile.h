@@ -227,7 +227,8 @@ class Tile : public Cylinder
 				return ZONE_NORMAL;
 			}
 		}
-
+		
+		uint32_t getHeight() const;
 		bool hasHeight(uint32_t n) const;
 
 		std::string getDescription(int32_t lookDistance) const override final;

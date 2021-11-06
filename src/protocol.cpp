@@ -46,7 +46,7 @@ void Protocol::onSendMessage(const OutputMessage_ptr& msg) const
 
 		if (encryptionEnabled) {
 			XTEA_encrypt(*msg);
-			msg->addCryptoHeader(checksumEnabled, compressed);
+			msg->addCryptoHeader();
 		}
 	}
 }
@@ -86,15 +86,15 @@ void Protocol::XTEA_encrypt(OutputMessage& msg) const
 
 bool Protocol::XTEA_decrypt(NetworkMessage& msg) const
 {
-	if (((msg.getLength() - 6) & 7) != 0) {
+	if (((msg.getLength() - 2) & 7) != 0) {
 		return false;
 	}
 
 	uint8_t* buffer = msg.getBuffer() + msg.getBufferPosition();
-	xtea::decrypt(buffer, msg.getLength() - 6, key);
+	xtea::decrypt(buffer, msg.getLength() - 2, key);
 
 	uint16_t innerLength = msg.get<uint16_t>();
-	if (innerLength + 8 > msg.getLength()) {
+	if (innerLength > msg.getLength() - 4) {
 		return false;
 	}
 

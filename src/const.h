@@ -180,48 +180,35 @@ enum SpeakClasses : uint8_t {
 	TALKTYPE_SAY = 1,
 	TALKTYPE_WHISPER = 2,
 	TALKTYPE_YELL = 3,
-	TALKTYPE_PRIVATE_FROM = 4,
-	TALKTYPE_PRIVATE_TO = 5,
-	TALKTYPE_CHANNEL_Y = 7,
-	TALKTYPE_CHANNEL_O = 8,
-	TALKTYPE_PRIVATE_NP = 10,
-	TALKTYPE_PRIVATE_PN = 12,
-	TALKTYPE_BROADCAST = 13,
-	TALKTYPE_CHANNEL_R1 = 14, //red - #c text
-	TALKTYPE_PRIVATE_RED_FROM = 15, //@name@text
-	TALKTYPE_PRIVATE_RED_TO = 16, //@name@text
-	TALKTYPE_MONSTER_SAY = 36,
-	TALKTYPE_MONSTER_YELL = 37,
-
-	TALKTYPE_CHANNEL_R2 = 0xFF, //#d
+	TALKTYPE_PRIVATE = 4,
+	TALKTYPE_CHANNEL_Y = 5,
+	TALKTYPE_RVR_CHANNEL = 6,
+	TALKTYPE_RVR_ANSWER = 7,
+	TALKTYPE_RVR_CONTINUE = 8,
+	TALKTYPE_BROADCAST = 9,
+	TALKTYPE_CHANNEL_R1 = 10, //red - #c text
+	TALKTYPE_PRIVATE_RED = 11, //@name@text
+	TALKTYPE_CHANNEL_O = 12, //@name@text
+	TALKTYPE_CHANNEL_R2 = 14, //#d
+	TALKTYPE_MONSTER_SAY = 16,
+	TALKTYPE_MONSTER_YELL = 17,
 };
 
 enum MessageClasses : uint8_t {
-	MESSAGE_STATUS_CONSOLE_BLUE = 4, /*FIXME Blue message in the console*/
-
-	MESSAGE_STATUS_CONSOLE_RED = 13, /*Red message in the console*/
-
-	MESSAGE_STATUS_DEFAULT = 17, /*White message at the bottom of the game window and in the console*/
+	MESSAGE_STATUS_CONSOLE_YELLOW = 1, /*Yellow message in the console*/
+	MESSAGE_STATUS_CONSOLE_LIGHTBLUE = 4, /*Light blue message in the console*/
+	MESSAGE_STATUS_CONSOLE_ORANGE = 17, /*Orange message in the console*/
 	MESSAGE_STATUS_WARNING = 18, /*Red message in game window and in the console*/
 	MESSAGE_EVENT_ADVANCE = 19, /*White message in game window and in the console*/
+	MESSAGE_EVENT_DEFAULT = 20, /*White message at the bottom of the game window and in the console*/
 
-	MESSAGE_STATUS_SMALL = 21, /*White message at the bottom of the game window"*/
+	MESSAGE_STATUS_DEFAULT = 21, /*White message at the bottom of the game window and in the console*/
+
 	MESSAGE_INFO_DESCR = 22, /*Green message in game window and in the console*/
-	MESSAGE_DAMAGE_DEALT = 23,
-	MESSAGE_DAMAGE_RECEIVED = 24,
-	MESSAGE_HEALED = 25,
-	MESSAGE_EXPERIENCE = 26,
-	MESSAGE_DAMAGE_OTHERS = 27,
-	MESSAGE_HEALED_OTHERS = 28,
-	MESSAGE_EXPERIENCE_OTHERS = 29,
-	MESSAGE_EVENT_DEFAULT = 30, /*White message at the bottom of the game window and in the console*/
-	MESSAGE_LOOT = 31,
 
-	MESSAGE_GUILD = 33, /*White message in channel (+ channelId)*/
-	MESSAGE_PARTY_MANAGEMENT = 34, /*White message in channel (+ channelId)*/
-	MESSAGE_PARTY = 35, /*White message in channel (+ channelId)*/
-	MESSAGE_EVENT_ORANGE = 36, /*Orange message in the console*/
-	MESSAGE_STATUS_CONSOLE_ORANGE = 37,  /*Orange message in the console*/
+	MESSAGE_STATUS_SMALL = 23, /*White message at the bottom of the game window"*/
+	MESSAGE_STATUS_CONSOLE_BLUE = 24, /*Blue message in the console*/
+	MESSAGE_STATUS_CONSOLE_RED = 25, /*Red message in the console*/
 };
 
 enum FluidColors_t : uint8_t {
@@ -284,14 +271,12 @@ const uint8_t clientToServerFluidMap[] = {
 	FLUID_MUD,
 	FLUID_BLOOD,
 	FLUID_SLIME,
-	FLUID_RUM,
 	FLUID_LEMONADE,
 	FLUID_MILK,
 	FLUID_WINE,
 	FLUID_LIFE,
 	FLUID_URINE,
 	FLUID_OIL,
-	FLUID_FRUITJUICE,
 	FLUID_COCONUTMILK,
 	FLUID_TEA,
 	FLUID_MEAD,
@@ -333,10 +318,8 @@ enum TextColor_t : uint8_t {
 	TEXTCOLOR_DARKRED = 108,
 	TEXTCOLOR_LIGHTGREY = 129,
 	TEXTCOLOR_SKYBLUE = 143,
-	TEXTCOLOR_PURPLE = 154,
-	TEXTCOLOR_ELECTRICPURPLE = 155,
+	TEXTCOLOR_PURPLE = 155,
 	TEXTCOLOR_RED = 180,
-	TEXTCOLOR_PASTELRED = 194,
 	TEXTCOLOR_ORANGE = 198,
 	TEXTCOLOR_YELLOW = 210,
 	TEXTCOLOR_WHITE_EXP = 215,
@@ -352,14 +335,6 @@ enum Icons_t {
 	ICON_PARALYZE = 1 << 5,
 	ICON_HASTE = 1 << 6,
 	ICON_SWORDS = 1 << 7,
-	ICON_DROWNING = 1 << 8,
-	ICON_FREEZING = 1 << 9,
-	ICON_DAZZLED = 1 << 10,
-	ICON_CURSED = 1 << 11,
-	ICON_PARTY_BUFF = 1 << 12,
-	ICON_REDSWORDS = 1 << 13,
-	ICON_PIGEON = 1 << 14,
-	ICON_BLEEDING = 1 << 15,
 };
 
 enum WeaponType_t : uint8_t {
@@ -405,8 +380,6 @@ enum Skulls_t : uint8_t {
 	SKULL_GREEN = 2,
 	SKULL_WHITE = 3,
 	SKULL_RED = 4,
-	SKULL_BLACK = 5,
-	SKULL_ORANGE = 6,
 };
 
 enum PartyShields_t : uint8_t {
@@ -434,8 +407,6 @@ enum GuildEmblems_t : uint8_t {
 };
 
 enum item_t : uint16_t {
-	ITEM_BROWSEFIELD = 460, // for internal use
-
 	ITEM_FIREFIELD_PVP_FULL = 1487,
 	ITEM_FIREFIELD_PVP_MEDIUM = 1488,
 	ITEM_FIREFIELD_PVP_SMALL = 1489,
@@ -454,7 +425,7 @@ enum item_t : uint16_t {
 
 	ITEM_MAGICWALL = 1497,
 	ITEM_MAGICWALL_PERSISTENT = 1498,
-	ITEM_MAGICWALL_SAFE = 11098,
+	ITEM_MAGICWALL_SAFE = 1499,
 	ITEM_MAGICWALL_NOPVP = 20669,
 
 	ITEM_WILDGROWTH = 1499,
@@ -463,7 +434,6 @@ enum item_t : uint16_t {
 	ITEM_WILDGROWTH_NOPVP = 20670,
 
 	ITEM_BAG = 1987,
-	ITEM_SHOPPING_BAG = 23782,
 
 	ITEM_GOLD_COIN = 2148,
 	ITEM_PLATINUM_COIN = 2152,
@@ -472,26 +442,7 @@ enum item_t : uint16_t {
 
 	ITEM_DEPOT = 2594,
 	ITEM_LOCKER1 = 2589,
-	ITEM_INBOX = 14404,
 	ITEM_MARKET = 14405,
-	ITEM_STORE_INBOX = 26052,
-	ITEM_DEPOT_BOX_I = 25453,
-	ITEM_DEPOT_BOX_II = 25454,
-	ITEM_DEPOT_BOX_III = 25455,
-	ITEM_DEPOT_BOX_IV = 25456,
-	ITEM_DEPOT_BOX_V = 25457,
-	ITEM_DEPOT_BOX_VI = 25458,
-	ITEM_DEPOT_BOX_VII = 25459,
-	ITEM_DEPOT_BOX_VIII = 25460,
-	ITEM_DEPOT_BOX_IX = 25461,
-	ITEM_DEPOT_BOX_X = 25462,
-	ITEM_DEPOT_BOX_XI = 25463,
-	ITEM_DEPOT_BOX_XII = 25464,
-	ITEM_DEPOT_BOX_XIII = 25465,
-	ITEM_DEPOT_BOX_XIV = 25466,
-	ITEM_DEPOT_BOX_XV = 25467,
-	ITEM_DEPOT_BOX_XVI = 25468,
-	ITEM_DEPOT_BOX_XVII = 25469,
 
 	ITEM_MALE_CORPSE = 3058,
 	ITEM_FEMALE_CORPSE = 3065,
@@ -562,7 +513,6 @@ enum ReloadTypes_t : uint8_t  {
 	RELOAD_TYPE_GLOBALEVENTS,
 	RELOAD_TYPE_ITEMS,
 	RELOAD_TYPE_MONSTERS,
-	RELOAD_TYPE_MOUNTS,
 	RELOAD_TYPE_MOVEMENTS,
 	RELOAD_TYPE_NPCS,
 	RELOAD_TYPE_QUESTS,
@@ -705,10 +655,6 @@ static constexpr int32_t PSTRG_RESERVED_RANGE_SIZE = 10000000;
 //[1000 - 1500];
 static constexpr int32_t PSTRG_OUTFITS_RANGE_START = (PSTRG_RESERVED_RANGE_START + 1000);
 static constexpr int32_t PSTRG_OUTFITS_RANGE_SIZE = 500;
-//[2001 - 2011];
-static constexpr int32_t PSTRG_MOUNTS_RANGE_START = (PSTRG_RESERVED_RANGE_START + 2001);
-static constexpr int32_t PSTRG_MOUNTS_RANGE_SIZE = 10;
-static constexpr int32_t PSTRG_MOUNTS_CURRENTMOUNT = (PSTRG_MOUNTS_RANGE_START + 10);
 //[2012 - 2022];
 static constexpr int32_t PSTRG_WINGS_RANGE_START = (PSTRG_RESERVED_RANGE_START + 2012);
 static constexpr int32_t PSTRG_WINGS_RANGE_SIZE = 10;

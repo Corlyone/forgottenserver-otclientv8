@@ -771,10 +771,6 @@ Position LuaScriptInterface::getPosition(lua_State* L, int32_t arg)
 Outfit_t LuaScriptInterface::getOutfit(lua_State* L, int32_t arg)
 {
 	Outfit_t outfit;
-	outfit.lookMount = getField<uint16_t>(L, arg, "lookMount");
-	outfit.lookWings = getField<uint16_t>(L, arg, "lookWings");
-	outfit.lookAura = getField<uint16_t>(L, arg, "lookAura");
-	outfit.lookAddons = getField<uint8_t>(L, arg, "lookAddons");
 
 	outfit.lookFeet = getField<uint8_t>(L, arg, "lookFeet");
 	outfit.lookLegs = getField<uint8_t>(L, arg, "lookLegs");
@@ -950,11 +946,6 @@ void LuaScriptInterface::pushOutfit(lua_State* L, const Outfit_t& outfit)
 	setField(L, "lookBody", outfit.lookBody);
 	setField(L, "lookLegs", outfit.lookLegs);
 	setField(L, "lookFeet", outfit.lookFeet);
-	setField(L, "lookAddons", outfit.lookAddons);
-	setField(L, "lookMount", outfit.lookMount);
-	setField(L, "lookWings", outfit.lookWings);
-	setField(L, "lookAura", outfit.lookAura);
-	setField(L, "lookShader", outfit.lookShader);
 }
 
 void LuaScriptInterface::pushLoot(lua_State* L, const std::vector<LootBlock>& lootList)
@@ -1121,9 +1112,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(COMBAT_LIFEDRAIN)
 	registerEnum(COMBAT_MANADRAIN)
 	registerEnum(COMBAT_HEALING)
-	registerEnum(COMBAT_DROWNDAMAGE)
-	registerEnum(COMBAT_ICEDAMAGE)
-	registerEnum(COMBAT_HOLYDAMAGE)
 	registerEnum(COMBAT_DEATHDAMAGE)
 
 	registerEnum(COMBAT_PARAM_TYPE)
@@ -1141,7 +1129,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONDITION_POISON)
 	registerEnum(CONDITION_FIRE)
 	registerEnum(CONDITION_ENERGY)
-	registerEnum(CONDITION_BLEEDING)
 	registerEnum(CONDITION_HASTE)
 	registerEnum(CONDITION_PARALYZE)
 	registerEnum(CONDITION_OUTFIT)
@@ -1153,14 +1140,10 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONDITION_EXHAUST_WEAPON)
 	registerEnum(CONDITION_REGENERATION)
 	registerEnum(CONDITION_SOUL)
-	registerEnum(CONDITION_DROWN)
 	registerEnum(CONDITION_MUTED)
 	registerEnum(CONDITION_CHANNELMUTEDTICKS)
 	registerEnum(CONDITION_YELLTICKS)
 	registerEnum(CONDITION_ATTRIBUTES)
-	registerEnum(CONDITION_FREEZING)
-	registerEnum(CONDITION_DAZZLED)
-	registerEnum(CONDITION_CURSED)
 	registerEnum(CONDITION_EXHAUST_COMBAT)
 	registerEnum(CONDITION_EXHAUST_HEAL)
 	registerEnum(CONDITION_PACIFIED)
@@ -1224,12 +1207,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONDITION_PARAM_SUBID)
 	registerEnum(CONDITION_PARAM_FIELD)
 	registerEnum(CONDITION_PARAM_DISABLE_DEFENSE)
-	registerEnum(CONDITION_PARAM_SPECIALSKILL_CRITICALHITCHANCE)
-	registerEnum(CONDITION_PARAM_SPECIALSKILL_CRITICALHITAMOUNT)
-	registerEnum(CONDITION_PARAM_SPECIALSKILL_LIFELEECHCHANCE)
-	registerEnum(CONDITION_PARAM_SPECIALSKILL_LIFELEECHAMOUNT)
-	registerEnum(CONDITION_PARAM_SPECIALSKILL_MANALEECHCHANCE)
-	registerEnum(CONDITION_PARAM_SPECIALSKILL_MANALEECHAMOUNT)
 	registerEnum(CONDITION_PARAM_AGGRESSIVE)
 
 	registerEnum(CONST_ME_NONE)
@@ -1258,66 +1235,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONST_ME_SOUND_PURPLE)
 	registerEnum(CONST_ME_SOUND_BLUE)
 	registerEnum(CONST_ME_SOUND_WHITE)
-	registerEnum(CONST_ME_BUBBLES)
-	registerEnum(CONST_ME_CRAPS)
-	registerEnum(CONST_ME_GIFT_WRAPS)
-	registerEnum(CONST_ME_FIREWORK_YELLOW)
-	registerEnum(CONST_ME_FIREWORK_RED)
-	registerEnum(CONST_ME_FIREWORK_BLUE)
-	registerEnum(CONST_ME_STUN)
-	registerEnum(CONST_ME_SLEEP)
-	registerEnum(CONST_ME_WATERCREATURE)
-	registerEnum(CONST_ME_GROUNDSHAKER)
-	registerEnum(CONST_ME_HEARTS)
-	registerEnum(CONST_ME_FIREATTACK)
-	registerEnum(CONST_ME_ENERGYAREA)
-	registerEnum(CONST_ME_SMALLCLOUDS)
-	registerEnum(CONST_ME_HOLYDAMAGE)
-	registerEnum(CONST_ME_BIGCLOUDS)
-	registerEnum(CONST_ME_ICEAREA)
-	registerEnum(CONST_ME_ICETORNADO)
-	registerEnum(CONST_ME_ICEATTACK)
-	registerEnum(CONST_ME_STONES)
-	registerEnum(CONST_ME_SMALLPLANTS)
-	registerEnum(CONST_ME_CARNIPHILA)
-	registerEnum(CONST_ME_PURPLEENERGY)
-	registerEnum(CONST_ME_YELLOWENERGY)
-	registerEnum(CONST_ME_HOLYAREA)
-	registerEnum(CONST_ME_BIGPLANTS)
-	registerEnum(CONST_ME_CAKE)
-	registerEnum(CONST_ME_GIANTICE)
-	registerEnum(CONST_ME_WATERSPLASH)
-	registerEnum(CONST_ME_PLANTATTACK)
-	registerEnum(CONST_ME_TUTORIALARROW)
-	registerEnum(CONST_ME_TUTORIALSQUARE)
-	registerEnum(CONST_ME_MIRRORHORIZONTAL)
-	registerEnum(CONST_ME_MIRRORVERTICAL)
-	registerEnum(CONST_ME_SKULLHORIZONTAL)
-	registerEnum(CONST_ME_SKULLVERTICAL)
-	registerEnum(CONST_ME_ASSASSIN)
-	registerEnum(CONST_ME_STEPSHORIZONTAL)
-	registerEnum(CONST_ME_BLOODYSTEPS)
-	registerEnum(CONST_ME_STEPSVERTICAL)
-	registerEnum(CONST_ME_YALAHARIGHOST)
-	registerEnum(CONST_ME_BATS)
-	registerEnum(CONST_ME_SMOKE)
-	registerEnum(CONST_ME_INSECTS)
-	registerEnum(CONST_ME_DRAGONHEAD)
-	registerEnum(CONST_ME_ORCSHAMAN)
-	registerEnum(CONST_ME_ORCSHAMAN_FIRE)
-	registerEnum(CONST_ME_THUNDER)
-	registerEnum(CONST_ME_FERUMBRAS)
-	registerEnum(CONST_ME_CONFETTI_HORIZONTAL)
-	registerEnum(CONST_ME_CONFETTI_VERTICAL)
-	registerEnum(CONST_ME_BLACKSMOKE)
-	registerEnum(CONST_ME_REDSMOKE)
-	registerEnum(CONST_ME_YELLOWSMOKE)
-	registerEnum(CONST_ME_GREENSMOKE)
-	registerEnum(CONST_ME_PURPLESMOKE)
-	registerEnum(CONST_ME_EARLY_THUNDER)
-	registerEnum(CONST_ME_RAGIAZ_BONECAPSULE)
-	registerEnum(CONST_ME_CRITICAL_DAMAGE)
-	registerEnum(CONST_ME_PLUNGING_FISH)
 
 	registerEnum(CONST_ANI_NONE)
 	registerEnum(CONST_ANI_SPEAR)
@@ -1335,41 +1252,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONST_ANI_SNOWBALL)
 	registerEnum(CONST_ANI_POWERBOLT)
 	registerEnum(CONST_ANI_POISON)
-	registerEnum(CONST_ANI_INFERNALBOLT)
-	registerEnum(CONST_ANI_HUNTINGSPEAR)
-	registerEnum(CONST_ANI_ENCHANTEDSPEAR)
-	registerEnum(CONST_ANI_REDSTAR)
-	registerEnum(CONST_ANI_GREENSTAR)
-	registerEnum(CONST_ANI_ROYALSPEAR)
-	registerEnum(CONST_ANI_SNIPERARROW)
-	registerEnum(CONST_ANI_ONYXARROW)
-	registerEnum(CONST_ANI_PIERCINGBOLT)
-	registerEnum(CONST_ANI_WHIRLWINDSWORD)
-	registerEnum(CONST_ANI_WHIRLWINDAXE)
-	registerEnum(CONST_ANI_WHIRLWINDCLUB)
-	registerEnum(CONST_ANI_ETHEREALSPEAR)
-	registerEnum(CONST_ANI_ICE)
-	registerEnum(CONST_ANI_EARTH)
-	registerEnum(CONST_ANI_HOLY)
-	registerEnum(CONST_ANI_SUDDENDEATH)
-	registerEnum(CONST_ANI_FLASHARROW)
-	registerEnum(CONST_ANI_FLAMMINGARROW)
-	registerEnum(CONST_ANI_SHIVERARROW)
-	registerEnum(CONST_ANI_ENERGYBALL)
-	registerEnum(CONST_ANI_SMALLICE)
-	registerEnum(CONST_ANI_SMALLHOLY)
-	registerEnum(CONST_ANI_SMALLEARTH)
-	registerEnum(CONST_ANI_EARTHARROW)
-	registerEnum(CONST_ANI_EXPLOSION)
-	registerEnum(CONST_ANI_CAKE)
-	registerEnum(CONST_ANI_TARSALARROW)
-	registerEnum(CONST_ANI_VORTEXBOLT)
-	registerEnum(CONST_ANI_PRISMATICBOLT)
-	registerEnum(CONST_ANI_CRYSTALLINEARROW)
-	registerEnum(CONST_ANI_DRILLBOLT)
-	registerEnum(CONST_ANI_ENVENOMEDARROW)
-	registerEnum(CONST_ANI_GLOOTHSPEAR)
-	registerEnum(CONST_ANI_SIMPLEARROW)
 	registerEnum(CONST_ANI_WEAPONTYPE)
 
 	registerEnum(CONST_PROP_BLOCKSOLID)
@@ -1425,26 +1307,8 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(MESSAGE_EVENT_ADVANCE)
 	registerEnum(MESSAGE_STATUS_SMALL)
 	registerEnum(MESSAGE_INFO_DESCR)
-	registerEnum(MESSAGE_DAMAGE_DEALT)
-	registerEnum(MESSAGE_DAMAGE_RECEIVED)
-	registerEnum(MESSAGE_HEALED)
-	registerEnum(MESSAGE_EXPERIENCE)
-	registerEnum(MESSAGE_DAMAGE_OTHERS)
-	registerEnum(MESSAGE_HEALED_OTHERS)
-	registerEnum(MESSAGE_EXPERIENCE_OTHERS)
 	registerEnum(MESSAGE_EVENT_DEFAULT)
-	registerEnum(MESSAGE_GUILD)
-	registerEnum(MESSAGE_PARTY_MANAGEMENT)
-	registerEnum(MESSAGE_PARTY)
-	registerEnum(MESSAGE_EVENT_ORANGE)
 	registerEnum(MESSAGE_STATUS_CONSOLE_ORANGE)
-	registerEnum(MESSAGE_LOOT)
-
-	registerEnum(CREATURETYPE_PLAYER)
-	registerEnum(CREATURETYPE_MONSTER)
-	registerEnum(CREATURETYPE_NPC)
-	registerEnum(CREATURETYPE_SUMMON_OWN)
-	registerEnum(CREATURETYPE_SUMMON_OTHERS)
 
 	registerEnum(CLIENTOS_LINUX)
 	registerEnum(CLIENTOS_WINDOWS)
@@ -1494,7 +1358,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(ITEM_TYPE_RUNE)
 
 	registerEnum(ITEM_BAG)
-	registerEnum(ITEM_SHOPPING_BAG)
 	registerEnum(ITEM_GOLD_COIN)
 	registerEnum(ITEM_PLATINUM_COIN)
 	registerEnum(ITEM_CRYSTAL_COIN)
@@ -1601,34 +1464,21 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(SKILL_MAGLEVEL)
 	registerEnum(SKILL_LEVEL)
 
-	registerEnum(SPECIALSKILL_CRITICALHITCHANCE)
-	registerEnum(SPECIALSKILL_CRITICALHITAMOUNT)
-	registerEnum(SPECIALSKILL_LIFELEECHCHANCE)
-	registerEnum(SPECIALSKILL_LIFELEECHAMOUNT)
-	registerEnum(SPECIALSKILL_MANALEECHCHANCE)
-	registerEnum(SPECIALSKILL_MANALEECHAMOUNT)
-
 	registerEnum(SKULL_NONE)
 	registerEnum(SKULL_YELLOW)
 	registerEnum(SKULL_GREEN)
 	registerEnum(SKULL_WHITE)
 	registerEnum(SKULL_RED)
-	registerEnum(SKULL_BLACK)
-	registerEnum(SKULL_ORANGE)
 
 	registerEnum(TALKTYPE_SAY)
 	registerEnum(TALKTYPE_WHISPER)
 	registerEnum(TALKTYPE_YELL)
-	registerEnum(TALKTYPE_PRIVATE_FROM)
-	registerEnum(TALKTYPE_PRIVATE_TO)
+	registerEnum(TALKTYPE_PRIVATE)
+	registerEnum(TALKTYPE_PRIVATE_RED)
 	registerEnum(TALKTYPE_CHANNEL_Y)
 	registerEnum(TALKTYPE_CHANNEL_O)
-	registerEnum(TALKTYPE_PRIVATE_NP)
-	registerEnum(TALKTYPE_PRIVATE_PN)
 	registerEnum(TALKTYPE_BROADCAST)
 	registerEnum(TALKTYPE_CHANNEL_R1)
-	registerEnum(TALKTYPE_PRIVATE_RED_FROM)
-	registerEnum(TALKTYPE_PRIVATE_RED_TO)
 	registerEnum(TALKTYPE_MONSTER_SAY)
 	registerEnum(TALKTYPE_MONSTER_YELL)
 	registerEnum(TALKTYPE_CHANNEL_R2)
@@ -1641,9 +1491,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(TEXTCOLOR_LIGHTGREY)
 	registerEnum(TEXTCOLOR_SKYBLUE)
 	registerEnum(TEXTCOLOR_PURPLE)
-	registerEnum(TEXTCOLOR_ELECTRICPURPLE)
 	registerEnum(TEXTCOLOR_RED)
-	registerEnum(TEXTCOLOR_PASTELRED)
 	registerEnum(TEXTCOLOR_ORANGE)
 	registerEnum(TEXTCOLOR_YELLOW)
 	registerEnum(TEXTCOLOR_WHITE_EXP)
@@ -1724,13 +1572,6 @@ void LuaScriptInterface::registerFunctions()
 	// Use with house:getAccessList, house:setAccessList
 	registerEnum(GUEST_LIST)
 	registerEnum(SUBOWNER_LIST)
-
-	// Use with npc:setSpeechBubble
-	registerEnum(SPEECHBUBBLE_NONE)
-	registerEnum(SPEECHBUBBLE_NORMAL)
-	registerEnum(SPEECHBUBBLE_TRADE)
-	registerEnum(SPEECHBUBBLE_QUEST)
-	registerEnum(SPEECHBUBBLE_QUESTTRADER)
 
 	// Use with player:addMapMark
 	registerEnum(MAPMARK_TICK)
@@ -1837,7 +1678,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(RELOAD_TYPE_GLOBALEVENTS)
 	registerEnum(RELOAD_TYPE_ITEMS)
 	registerEnum(RELOAD_TYPE_MONSTERS)
-	registerEnum(RELOAD_TYPE_MOUNTS)
 	registerEnum(RELOAD_TYPE_MOVEMENTS)
 	registerEnum(RELOAD_TYPE_NPCS)
 	registerEnum(RELOAD_TYPE_QUESTS)
@@ -1878,7 +1718,6 @@ void LuaScriptInterface::registerFunctions()
 
 	registerEnumIn("configKeys", ConfigManager::ALLOW_CHANGEOUTFIT)
 	registerEnumIn("configKeys", ConfigManager::ONE_PLAYER_ON_ACCOUNT)
-	registerEnumIn("configKeys", ConfigManager::AIMBOT_HOTKEY_ENABLED)
 	registerEnumIn("configKeys", ConfigManager::REMOVE_RUNE_CHARGES)
 	registerEnumIn("configKeys", ConfigManager::REMOVE_WEAPON_AMMO)
 	registerEnumIn("configKeys", ConfigManager::REMOVE_WEAPON_CHARGES)
@@ -1933,7 +1772,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::RATE_SPAWN)
 	registerEnumIn("configKeys", ConfigManager::HOUSE_PRICE)
 	registerEnumIn("configKeys", ConfigManager::KILLS_TO_RED)
-	registerEnumIn("configKeys", ConfigManager::KILLS_TO_BLACK)
 	registerEnumIn("configKeys", ConfigManager::MAX_MESSAGEBUFFER)
 	registerEnumIn("configKeys", ConfigManager::ACTIONS_DELAY_INTERVAL)
 	registerEnumIn("configKeys", ConfigManager::EX_ACTIONS_DELAY_INTERVAL)
@@ -2291,7 +2129,6 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "getFreeCapacity", LuaScriptInterface::luaPlayerGetFreeCapacity);
 
 	registerMethod("Player", "getDepotChest", LuaScriptInterface::luaPlayerGetDepotChest);
-	registerMethod("Player", "getInbox", LuaScriptInterface::luaPlayerGetInbox);
 
 	registerMethod("Player", "getSkullTime", LuaScriptInterface::luaPlayerGetSkullTime);
 	registerMethod("Player", "setSkullTime", LuaScriptInterface::luaPlayerSetSkullTime);
@@ -2319,17 +2156,6 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "getSkillPercent", LuaScriptInterface::luaPlayerGetSkillPercent);
 	registerMethod("Player", "getSkillTries", LuaScriptInterface::luaPlayerGetSkillTries);
 	registerMethod("Player", "addSkillTries", LuaScriptInterface::luaPlayerAddSkillTries);
-	registerMethod("Player", "getSpecialSkill", LuaScriptInterface::luaPlayerGetSpecialSkill);
-	registerMethod("Player", "addSpecialSkill", LuaScriptInterface::luaPlayerAddSpecialSkill);
-
-	registerMethod("Player", "addOfflineTrainingTime", LuaScriptInterface::luaPlayerAddOfflineTrainingTime);
-	registerMethod("Player", "getOfflineTrainingTime", LuaScriptInterface::luaPlayerGetOfflineTrainingTime);
-	registerMethod("Player", "removeOfflineTrainingTime", LuaScriptInterface::luaPlayerRemoveOfflineTrainingTime);
-
-	registerMethod("Player", "addOfflineTrainingTries", LuaScriptInterface::luaPlayerAddOfflineTrainingTries);
-
-	registerMethod("Player", "getOfflineTrainingSkill", LuaScriptInterface::luaPlayerGetOfflineTrainingSkill);
-	registerMethod("Player", "setOfflineTrainingSkill", LuaScriptInterface::luaPlayerSetOfflineTrainingSkill);
 
 	registerMethod("Player", "getItemCount", LuaScriptInterface::luaPlayerGetItemCount);
 	registerMethod("Player", "getItemById", LuaScriptInterface::luaPlayerGetItemById);
@@ -2379,6 +2205,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "showTextDialog", LuaScriptInterface::luaPlayerShowTextDialog);
 
 	registerMethod("Player", "sendTextMessage", LuaScriptInterface::luaPlayerSendTextMessage);
+	registerMethod("Player", "sendColoredMessage", LuaScriptInterface::luaPlayerSendColoredText);
 	registerMethod("Player", "sendChannelMessage", LuaScriptInterface::luaPlayerSendChannelMessage);
 	registerMethod("Player", "sendPrivateMessage", LuaScriptInterface::luaPlayerSendPrivateMessage);
 	registerMethod("Player", "channelSay", LuaScriptInterface::luaPlayerChannelSay);
@@ -2389,16 +2216,10 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "getParty", LuaScriptInterface::luaPlayerGetParty);
 
 	registerMethod("Player", "addOutfit", LuaScriptInterface::luaPlayerAddOutfit);
-	registerMethod("Player", "addOutfitAddon", LuaScriptInterface::luaPlayerAddOutfitAddon);
 	registerMethod("Player", "removeOutfit", LuaScriptInterface::luaPlayerRemoveOutfit);
-	registerMethod("Player", "removeOutfitAddon", LuaScriptInterface::luaPlayerRemoveOutfitAddon);
 	registerMethod("Player", "hasOutfit", LuaScriptInterface::luaPlayerHasOutfit);
 	registerMethod("Player", "canWearOutfit", LuaScriptInterface::luaPlayerCanWearOutfit);
 	registerMethod("Player", "sendOutfitWindow", LuaScriptInterface::luaPlayerSendOutfitWindow);
-
-	registerMethod("Player", "addMount", LuaScriptInterface::luaPlayerAddMount);
-	registerMethod("Player", "removeMount", LuaScriptInterface::luaPlayerRemoveMount);
-	registerMethod("Player", "hasMount", LuaScriptInterface::luaPlayerHasMount);
 
 	registerMethod("Player", "getPremiumDays", LuaScriptInterface::luaPlayerGetPremiumDays);
 	registerMethod("Player", "addPremiumDays", LuaScriptInterface::luaPlayerAddPremiumDays);
@@ -2478,9 +2299,6 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Npc", "isNpc", LuaScriptInterface::luaNpcIsNpc);
 
 	registerMethod("Npc", "setMasterPos", LuaScriptInterface::luaNpcSetMasterPos);
-
-	registerMethod("Npc", "getSpeechBubble", LuaScriptInterface::luaNpcGetSpeechBubble);
-	registerMethod("Npc", "setSpeechBubble", LuaScriptInterface::luaNpcSetSpeechBubble);
 
 	// Guild
 	registerClass("Guild", "", LuaScriptInterface::luaGuildCreate);
@@ -7099,7 +6917,6 @@ int LuaScriptInterface::luaCreatureSetMaster(lua_State* L)
 	}
 
 	pushBoolean(L, creature->setMaster(getCreature(L, 2)));
-	g_game.updateCreatureType(creature);
 	return 1;
 }
 
@@ -7939,24 +7756,6 @@ int LuaScriptInterface::luaPlayerGetDepotChest(lua_State* L)
 	return 1;
 }
 
-int LuaScriptInterface::luaPlayerGetInbox(lua_State* L)
-{
-	// player:getInbox()
-	Player* player = getUserdata<Player>(L, 1);
-	if (!player) {
-		lua_pushnil(L);
-		return 1;
-	}
-
-	Inbox* inbox = player->getInbox();
-	if (inbox) {
-		pushUserdata<Item>(L, inbox);
-		setItemMetatable(L, -1, inbox);
-	} else {
-		pushBoolean(L, false);
-	}
-	return 1;
-}
 
 int LuaScriptInterface::luaPlayerGetSkullTime(lua_State* L)
 {
@@ -8244,123 +8043,6 @@ int LuaScriptInterface::luaPlayerAddSkillTries(lua_State* L)
 		skills_t skillType = getNumber<skills_t>(L, 2);
 		uint64_t tries = getNumber<uint64_t>(L, 3);
 		player->addSkillAdvance(skillType, tries);
-		pushBoolean(L, true);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerGetSpecialSkill(lua_State* L)
-{
-	// player:getSpecialSkill(specialSkillType)
-	SpecialSkills_t specialSkillType = getNumber<SpecialSkills_t>(L, 2);
-	Player* player = getUserdata<Player>(L, 1);
-	if (player && specialSkillType <= SPECIALSKILL_LAST) {
-		lua_pushnumber(L, player->getSpecialSkill(specialSkillType));
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerAddSpecialSkill(lua_State* L)
-{
-	// player:addSpecialSkill(specialSkillType, value)
-	Player* player = getUserdata<Player>(L, 1);
-	if (!player) {
-		lua_pushnil(L);
-		return 1;
-	}
-
-	SpecialSkills_t specialSkillType = getNumber<SpecialSkills_t>(L, 2);
-	if (specialSkillType > SPECIALSKILL_LAST) {
-		lua_pushnil(L);
-		return 1;
-	}
-
-	player->setVarSpecialSkill(specialSkillType, getNumber<int32_t>(L, 3));
-	player->sendSkills();
-	pushBoolean(L, true);
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerAddOfflineTrainingTime(lua_State* L)
-{
-	// player:addOfflineTrainingTime(time)
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		int32_t time = getNumber<int32_t>(L, 2);
-		player->addOfflineTrainingTime(time);
-		player->sendStats();
-		pushBoolean(L, true);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-
-int LuaScriptInterface::luaPlayerGetOfflineTrainingTime(lua_State* L)
-{
-	// player:getOfflineTrainingTime()
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		lua_pushnumber(L, player->getOfflineTrainingTime());
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerRemoveOfflineTrainingTime(lua_State* L)
-{
-	// player:removeOfflineTrainingTime(time)
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		int32_t time = getNumber<int32_t>(L, 2);
-		player->removeOfflineTrainingTime(time);
-		player->sendStats();
-		pushBoolean(L, true);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerAddOfflineTrainingTries(lua_State* L)
-{
-	// player:addOfflineTrainingTries(skillType, tries)
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		skills_t skillType = getNumber<skills_t>(L, 2);
-		uint64_t tries = getNumber<uint64_t>(L, 3);
-		pushBoolean(L, player->addOfflineTrainingTries(skillType, tries));
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerGetOfflineTrainingSkill(lua_State* L)
-{
-	// player:getOfflineTrainingSkill()
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		lua_pushnumber(L, player->getOfflineTrainingSkill());
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerSetOfflineTrainingSkill(lua_State* L)
-{
-	// player:setOfflineTrainingSkill(skillId)
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		uint32_t skillId = getNumber<uint32_t>(L, 2);
-		player->setOfflineTrainingSkill(skillId);
 		pushBoolean(L, true);
 	} else {
 		lua_pushnil(L);
@@ -9042,7 +8724,7 @@ int LuaScriptInterface::luaPlayerShowTextDialog(lua_State* L)
 
 int LuaScriptInterface::luaPlayerSendTextMessage(lua_State* L)
 {
-	// player:sendTextMessage(type, text[, position, primaryValue = 0, primaryColor = TEXTCOLOR_NONE[, secondaryValue = 0, secondaryColor = TEXTCOLOR_NONE]])
+	// player:sendTextMessage(type, text)
 	// player:sendTextMessage(type, text, channelId)
 
 	Player* player = getUserdata<Player>(L, 1);
@@ -9062,20 +8744,26 @@ int LuaScriptInterface::luaPlayerSendTextMessage(lua_State* L)
 			return 1;
 		}
 		message.channelId = channelId;
-	} else {
-		if (parameters >= 6) {
-			message.position = getPosition(L, 4);
-			message.primary.value = getNumber<int32_t>(L, 5);
-			message.primary.color = getNumber<TextColor_t>(L, 6);
-		}
-
-		if (parameters >= 8) {
-			message.secondary.value = getNumber<int32_t>(L, 7);
-			message.secondary.color = getNumber<TextColor_t>(L, 8);
-		}
 	}
 
 	player->sendTextMessage(message);
+	pushBoolean(L, true);
+
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerSendColoredText(lua_State* L)
+{
+	// player:sendColoredText(text, position, color)
+
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	ColoredText coloredText(getString(L, 2), getPosition(L, 3), getNumber<TextColor_t>(L, 4));
+	player->sendColoredText(coloredText);
 	pushBoolean(L, true);
 
 	return 1;
@@ -9109,7 +8797,7 @@ int LuaScriptInterface::luaPlayerSendPrivateMessage(lua_State* L)
 
 	const Player* speaker = getUserdata<const Player>(L, 2);
 	const std::string& text = getString(L, 3);
-	SpeakClasses type = getNumber<SpeakClasses>(L, 4, TALKTYPE_PRIVATE_FROM);
+	SpeakClasses type = getNumber<SpeakClasses>(L, 4, TALKTYPE_PRIVATE);
 	player->sendPrivateMessage(speaker, type, text);
 	pushBoolean(L, true);
 	return 1;
@@ -9197,22 +8885,7 @@ int LuaScriptInterface::luaPlayerAddOutfit(lua_State* L)
 	// player:addOutfit(lookType)
 	Player* player = getUserdata<Player>(L, 1);
 	if (player) {
-		player->addOutfit(getNumber<uint16_t>(L, 2), 0);
-		pushBoolean(L, true);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerAddOutfitAddon(lua_State* L)
-{
-	// player:addOutfitAddon(lookType, addon)
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		uint16_t lookType = getNumber<uint16_t>(L, 2);
-		uint8_t addon = getNumber<uint8_t>(L, 3);
-		player->addOutfit(lookType, addon);
+		player->addOutfit(getNumber<uint16_t>(L, 2));
 		pushBoolean(L, true);
 	} else {
 		lua_pushnil(L);
@@ -9233,28 +8906,14 @@ int LuaScriptInterface::luaPlayerRemoveOutfit(lua_State* L)
 	return 1;
 }
 
-int LuaScriptInterface::luaPlayerRemoveOutfitAddon(lua_State* L)
-{
-	// player:removeOutfitAddon(lookType, addon)
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		uint16_t lookType = getNumber<uint16_t>(L, 2);
-		uint8_t addon = getNumber<uint8_t>(L, 3);
-		pushBoolean(L, player->removeOutfitAddon(lookType, addon));
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
 int LuaScriptInterface::luaPlayerHasOutfit(lua_State* L)
 {
-	// player:hasOutfit(lookType[, addon = 0])
+	// player:hasOutfit(lookType)
 	Player* player = getUserdata<Player>(L, 1);
 	if (player) {
 		uint16_t lookType = getNumber<uint16_t>(L, 2);
 		uint8_t addon = getNumber<uint8_t>(L, 3, 0);
-		pushBoolean(L, player->hasOutfit(lookType, addon));
+		pushBoolean(L, player->canWear(lookType));
 	} else {
 		lua_pushnil(L);
 	}
@@ -9282,75 +8941,6 @@ int LuaScriptInterface::luaPlayerSendOutfitWindow(lua_State* L)
 	if (player) {
 		player->sendOutfitWindow();
 		pushBoolean(L, true);
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerAddMount(lua_State* L) {
-	// player:addMount(mountId or mountName)
-	Player* player = getUserdata<Player>(L, 1);
-	if (!player) {
-		lua_pushnil(L);
-		return 1;
-	}
-
-	uint8_t mountId;
-	if (isNumber(L, 2)) {
-		mountId = getNumber<uint8_t>(L, 2);
-	} else {
-		Mount* mount = g_game.mounts.getMountByName(getString(L, 2));
-		if (!mount) {
-			lua_pushnil(L);
-			return 1;
-		}
-		mountId = mount->id;
-	}
-	pushBoolean(L, player->tameMount(mountId));
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerRemoveMount(lua_State* L) {
-	// player:removeMount(mountId or mountName)
-	Player* player = getUserdata<Player>(L, 1);
-	if (!player) {
-		lua_pushnil(L);
-		return 1;
-	}
-
-	uint8_t mountId;
-	if (isNumber(L, 2)) {
-		mountId = getNumber<uint8_t>(L, 2);
-	} else {
-		Mount* mount = g_game.mounts.getMountByName(getString(L, 2));
-		if (!mount) {
-			lua_pushnil(L);
-			return 1;
-		}
-		mountId = mount->id;
-	}
-	pushBoolean(L, player->untameMount(mountId));
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerHasMount(lua_State* L) {
-	// player:hasMount(mountId or mountName)
-	const Player* player = getUserdata<const Player>(L, 1);
-	if (!player) {
-		lua_pushnil(L);
-		return 1;
-	}
-
-	Mount* mount = nullptr;
-	if (isNumber(L, 2)) {
-		mount = g_game.mounts.getMountByID(getNumber<uint8_t>(L, 2));
-	} else {
-		mount = g_game.mounts.getMountByName(getString(L, 2));
-	}
-
-	if (mount) {
-		pushBoolean(L, player->hasMount(mount));
 	} else {
 		lua_pushnil(L);
 	}
@@ -10205,28 +9795,6 @@ int LuaScriptInterface::luaNpcSetMasterPos(lua_State* L)
 	npc->setMasterPos(pos, radius);
 	pushBoolean(L, true);
 	return 1;
-}
-
-int LuaScriptInterface::luaNpcGetSpeechBubble(lua_State* L)
-{
-	// npc:getSpeechBubble()
-	Npc* npc = getUserdata<Npc>(L, 1);
-	if (npc) {
-		lua_pushnumber(L, npc->getSpeechBubble());
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaNpcSetSpeechBubble(lua_State* L)
-{
-	// npc:setSpeechBubble(speechBubble)
-	Npc* npc = getUserdata<Npc>(L, 1);
-	if (npc) {
-		npc->setSpeechBubble(getNumber<uint8_t>(L, 2));
-	}
-	return 0;
 }
 
 // Guild
@@ -12113,16 +11681,11 @@ int LuaScriptInterface::luaConditionSetFormula(lua_State* L)
 int LuaScriptInterface::luaConditionSetOutfit(lua_State* L)
 {
 	// condition:setOutfit(outfit)
-	// condition:setOutfit(lookTypeEx, lookType, lookHead, lookBody, lookLegs, lookFeet[, lookAddons[, lookMount, lookWings, lookAura, lookShader]])
+	// condition:setOutfit(lookTypeEx, lookType, lookHead, lookBody, lookLegs, lookFeet[, lookMount]])
 	Outfit_t outfit;
 	if (isTable(L, 2)) {
 		outfit = getOutfit(L, 2);
 	} else {
-		outfit.lookShader = getNumber<uint16_t>(L, 12, outfit.lookShader);
-		outfit.lookAura = getNumber<uint16_t>(L, 11, outfit.lookAura);
-		outfit.lookWings = getNumber<uint16_t>(L, 10, outfit.lookWings);
-		outfit.lookMount = getNumber<uint16_t>(L, 9, outfit.lookMount);
-		outfit.lookAddons = getNumber<uint8_t>(L, 8, outfit.lookAddons);
 		outfit.lookFeet = getNumber<uint8_t>(L, 7);
 		outfit.lookLegs = getNumber<uint8_t>(L, 6);
 		outfit.lookBody = getNumber<uint8_t>(L, 5);
@@ -12484,15 +12047,6 @@ int LuaScriptInterface::luaMonsterTypeCombatImmunities(lua_State* L)
 			} else if (immunity == "poison" || immunity == "earth") {
 				monsterType->info.damageImmunities |= COMBAT_EARTHDAMAGE;
 				pushBoolean(L, true);
-			} else if (immunity == "drown") {
-				monsterType->info.damageImmunities |= COMBAT_DROWNDAMAGE;
-				pushBoolean(L, true);
-			} else if (immunity == "ice") {
-				monsterType->info.damageImmunities |= COMBAT_ICEDAMAGE;
-				pushBoolean(L, true);
-			} else if (immunity == "holy") {
-				monsterType->info.damageImmunities |= COMBAT_HOLYDAMAGE;
-				pushBoolean(L, true);
 			} else if (immunity == "death") {
 				monsterType->info.damageImmunities |= COMBAT_DEATHDAMAGE;
 				pushBoolean(L, true);
@@ -12522,10 +12076,7 @@ int LuaScriptInterface::luaMonsterTypeConditionImmunities(lua_State* L)
 			lua_pushnumber(L, monsterType->info.conditionImmunities);
 		} else {
 			std::string immunity = getString(L, 2);
-			if (immunity == "physical") {
-				monsterType->info.conditionImmunities |= CONDITION_BLEEDING;
-				pushBoolean(L, true);
-			} else if (immunity == "energy") {
+			if (immunity == "energy") {
 				monsterType->info.conditionImmunities |= CONDITION_ENERGY;
 				pushBoolean(L, true);
 			} else if (immunity == "fire") {
@@ -12533,18 +12084,6 @@ int LuaScriptInterface::luaMonsterTypeConditionImmunities(lua_State* L)
 				pushBoolean(L, true);
 			} else if (immunity == "poison" || immunity == "earth") {
 				monsterType->info.conditionImmunities |= CONDITION_POISON;
-				pushBoolean(L, true);
-			} else if (immunity == "drown") {
-				monsterType->info.conditionImmunities |= CONDITION_DROWN;
-				pushBoolean(L, true);
-			} else if (immunity == "ice") {
-				monsterType->info.conditionImmunities |= CONDITION_FREEZING;
-				pushBoolean(L, true);
-			} else if (immunity == "holy") {
-				monsterType->info.conditionImmunities |= CONDITION_DAZZLED;
-				pushBoolean(L, true);
-			} else if (immunity == "death") {
-				monsterType->info.conditionImmunities |= CONDITION_CURSED;
 				pushBoolean(L, true);
 			} else if (immunity == "paralyze") {
 				monsterType->info.conditionImmunities |= CONDITION_PARALYZE;
@@ -12557,9 +12096,6 @@ int LuaScriptInterface::luaMonsterTypeConditionImmunities(lua_State* L)
 				pushBoolean(L, true);
 			} else if (immunity == "invisible" || immunity == "invisibility") {
 				monsterType->info.conditionImmunities |= CONDITION_INVISIBLE;
-				pushBoolean(L, true);
-			} else if (immunity == "bleed") {
-				monsterType->info.conditionImmunities |= CONDITION_BLEEDING;
 				pushBoolean(L, true);
 			} else {
 				std::cout << "[Warning - Monsters::loadMonster] Unknown immunity name " << immunity << " for monster: " << monsterType->name << std::endl;
@@ -15664,16 +15200,12 @@ int LuaScriptInterface::luaWeaponElement(lua_State* L)
 			std::string tmpStrValue = asLowerCaseString(element);
 			if (tmpStrValue == "earth") {
 				weapon->params.combatType = COMBAT_EARTHDAMAGE;
-			} else if (tmpStrValue == "ice") {
-				weapon->params.combatType = COMBAT_ICEDAMAGE;
 			} else if (tmpStrValue == "energy") {
 				weapon->params.combatType = COMBAT_ENERGYDAMAGE;
 			} else if (tmpStrValue == "fire") {
 				weapon->params.combatType = COMBAT_FIREDAMAGE;
 			} else if (tmpStrValue == "death") {
 				weapon->params.combatType = COMBAT_DEATHDAMAGE;
-			} else if (tmpStrValue == "holy") {
-				weapon->params.combatType = COMBAT_HOLYDAMAGE;
 			} else {
 				std::cout << "[Warning - weapon:element] Type \"" << element << "\" does not exist." << std::endl;
 			}
@@ -15985,16 +15517,12 @@ int LuaScriptInterface::luaWeaponExtraElement(lua_State* L)
 			std::string tmpStrValue = asLowerCaseString(element);
 			if (tmpStrValue == "earth") {
 				it.abilities.get()->elementType = COMBAT_EARTHDAMAGE;
-			} else if (tmpStrValue == "ice") {
-				it.abilities.get()->elementType = COMBAT_ICEDAMAGE;
 			} else if (tmpStrValue == "energy") {
 				it.abilities.get()->elementType = COMBAT_ENERGYDAMAGE;
 			} else if (tmpStrValue == "fire") {
 				it.abilities.get()->elementType = COMBAT_FIREDAMAGE;
 			} else if (tmpStrValue == "death") {
 				it.abilities.get()->elementType = COMBAT_DEATHDAMAGE;
-			} else if (tmpStrValue == "holy") {
-				it.abilities.get()->elementType = COMBAT_HOLYDAMAGE;
 			} else {
 				std::cout << "[Warning - weapon:extraElement] Type \"" << element << "\" does not exist." << std::endl;
 			}

@@ -33,12 +33,11 @@ struct Outfit {
 };
 
 struct ProtocolOutfit {
-	ProtocolOutfit(const std::string& name, uint16_t lookType, uint8_t addons) :
-		name(name), lookType(lookType), addons(addons) {}
+	ProtocolOutfit(const std::string& name, uint16_t lookType) :
+		name(name), lookType(lookType) {}
 
 	const std::string& name;
 	uint16_t lookType;
-	uint8_t addons;
 };
 
 class Outfits

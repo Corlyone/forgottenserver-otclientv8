@@ -131,9 +131,7 @@ class Creature : virtual public Thing
 
 		virtual const std::string& getName() const = 0;
 		virtual const std::string& getNameDescription() const = 0;
-
-		virtual CreatureType_t getType() const = 0;
-
+		
 		virtual void setID() = 0;
 		void setRemoved() {
 			isInternalRemoved = true;
@@ -301,10 +299,6 @@ class Creature : virtual public Thing
 		}
 		virtual float getDefenseFactor() const {
 			return 1.0f;
-		}
-
-		virtual uint8_t getSpeechBubble() const {
-			return SPEECHBUBBLE_NONE;
 		}
 
 		bool addCondition(Condition* condition, bool force = false);

@@ -53,16 +53,11 @@ class NpcScriptInterface final : public LuaScriptInterface
 		static int luaSetNpcFocus(lua_State* L);
 		static int luaGetNpcCid(lua_State* L);
 		static int luaGetNpcParameter(lua_State* L);
-		static int luaOpenShopWindow(lua_State* L);
-		static int luaCloseShopWindow(lua_State* L);
 		static int luaDoSellItem(lua_State* L);
 
 		// metatable
 		static int luaNpcGetParameter(lua_State* L);
 		static int luaNpcSetFocus(lua_State* L);
-
-		static int luaNpcOpenShopWindow(lua_State* L);
-		static int luaNpcCloseShopWindow(lua_State* L);
 
 	private:
 		bool initState() override;
@@ -80,9 +75,6 @@ class NpcEventsHandler
 		void onCreatureDisappear(Creature* creature);
 		void onCreatureMove(Creature* creature, const Position& oldPos, const Position& newPos);
 		void onCreatureSay(Creature* creature, SpeakClasses, const std::string& text);
-		void onPlayerTrade(Player* player, int32_t callback, uint16_t itemId, uint8_t count, uint8_t amount, bool ignore = false, bool inBackpacks = false);
-		void onPlayerCloseChannel(Player* player);
-		void onPlayerEndTrade(Player* player);
 		void onThink();
 
 		bool isLoaded() const;
@@ -95,8 +87,6 @@ class NpcEventsHandler
 		int32_t creatureDisappearEvent = -1;
 		int32_t creatureMoveEvent = -1;
 		int32_t creatureSayEvent = -1;
-		int32_t playerCloseChannelEvent = -1;
-		int32_t playerEndTradeEvent = -1;
 		int32_t thinkEvent = -1;
 		bool loaded = false;
 };
@@ -144,17 +134,6 @@ class Npc final : public Creature
 			return name;
 		}
 
-		CreatureType_t getType() const override {
-			return CREATURETYPE_NPC;
-		}
-
-		uint8_t getSpeechBubble() const override {
-			return speechBubble;
-		}
-		void setSpeechBubble(const uint8_t bubble) {
-			speechBubble = bubble;
-		}
-
 		void doSay(const std::string& text);
 		void doSayToPlayer(Player* player, const std::string& text);
 
@@ -172,11 +151,6 @@ class Npc final : public Creature
 				masterRadius = radius;
 			}
 		}
-
-		void onPlayerCloseChannel(Player* player);
-		void onPlayerTrade(Player* player, int32_t callback, uint16_t itemId, uint8_t count,
-		                   uint8_t amount, bool ignore = false, bool inBackpacks = false);
-		void onPlayerEndTrade(Player* player, int32_t buyCallback, int32_t sellCallback);
 
 		void turnToCreature(Creature* creature);
 		void setCreatureFocus(Creature* creature);
@@ -217,13 +191,8 @@ class Npc final : public Creature
 		void reset();
 		bool loadFromXml();
 
-		void addShopPlayer(Player* player);
-		void removeShopPlayer(Player* player);
-		void closeAllShopWindows();
-
 		std::map<std::string, std::string> parameters;
 
-		std::set<Player*> shopPlayerSet;
 		std::set<Player*> spectators;
 
 		std::string name;
@@ -237,7 +206,6 @@ class Npc final : public Creature
 		int32_t focusCreature;
 		int32_t masterRadius;
 
-		uint8_t speechBubble;
 
 		bool floorChange;
 		bool attackable;

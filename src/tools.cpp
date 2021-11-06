@@ -530,62 +530,6 @@ MagicEffectNames magicEffectNames = {
 	{"purplenote",		CONST_ME_SOUND_PURPLE},
 	{"bluenote",		CONST_ME_SOUND_BLUE},
 	{"whitenote",		CONST_ME_SOUND_WHITE},
-	{"bubbles",		CONST_ME_BUBBLES},
-	{"dice",		CONST_ME_CRAPS},
-	{"giftwraps",		CONST_ME_GIFT_WRAPS},
-	{"yellowfirework",	CONST_ME_FIREWORK_YELLOW},
-	{"redfirework",		CONST_ME_FIREWORK_RED},
-	{"bluefirework",	CONST_ME_FIREWORK_BLUE},
-	{"stun",		CONST_ME_STUN},
-	{"sleep",		CONST_ME_SLEEP},
-	{"watercreature",	CONST_ME_WATERCREATURE},
-	{"groundshaker",	CONST_ME_GROUNDSHAKER},
-	{"hearts",		CONST_ME_HEARTS},
-	{"fireattack",		CONST_ME_FIREATTACK},
-	{"energyarea",		CONST_ME_ENERGYAREA},
-	{"smallclouds",		CONST_ME_SMALLCLOUDS},
-	{"holydamage",		CONST_ME_HOLYDAMAGE},
-	{"bigclouds",		CONST_ME_BIGCLOUDS},
-	{"icearea",		CONST_ME_ICEAREA},
-	{"icetornado",		CONST_ME_ICETORNADO},
-	{"iceattack",		CONST_ME_ICEATTACK},
-	{"stones",		CONST_ME_STONES},
-	{"smallplants",		CONST_ME_SMALLPLANTS},
-	{"carniphila",		CONST_ME_CARNIPHILA},
-	{"purpleenergy",	CONST_ME_PURPLEENERGY},
-	{"yellowenergy",	CONST_ME_YELLOWENERGY},
-	{"holyarea",		CONST_ME_HOLYAREA},
-	{"bigplants",		CONST_ME_BIGPLANTS},
-	{"cake",		CONST_ME_CAKE},
-	{"giantice",		CONST_ME_GIANTICE},
-	{"watersplash",		CONST_ME_WATERSPLASH},
-	{"plantattack",		CONST_ME_PLANTATTACK},
-	{"tutorialarrow",	CONST_ME_TUTORIALARROW},
-	{"tutorialsquare",	CONST_ME_TUTORIALSQUARE},
-	{"mirrorhorizontal",	CONST_ME_MIRRORHORIZONTAL},
-	{"mirrorvertical",	CONST_ME_MIRRORVERTICAL},
-	{"skullhorizontal",	CONST_ME_SKULLHORIZONTAL},
-	{"skullvertical",	CONST_ME_SKULLVERTICAL},
-	{"assassin",		CONST_ME_ASSASSIN},
-	{"stepshorizontal",	CONST_ME_STEPSHORIZONTAL},
-	{"bloodysteps",		CONST_ME_BLOODYSTEPS},
-	{"stepsvertical",	CONST_ME_STEPSVERTICAL},
-	{"yalaharighost",	CONST_ME_YALAHARIGHOST},
-	{"bats",		CONST_ME_BATS},
-	{"smoke",		CONST_ME_SMOKE},
-	{"insects",		CONST_ME_INSECTS},
-	{"dragonhead",		CONST_ME_DRAGONHEAD},
-	{"orcshaman",		CONST_ME_ORCSHAMAN},
-	{"orcshamanfire",	CONST_ME_ORCSHAMAN_FIRE},
-	{"thunder",		CONST_ME_THUNDER},
-	{"ferumbras",		CONST_ME_FERUMBRAS},
-	{"confettihorizontal",	CONST_ME_CONFETTI_HORIZONTAL},
-	{"confettivertical",	CONST_ME_CONFETTI_VERTICAL},
-	{"blacksmoke",		CONST_ME_BLACKSMOKE},
-	{"redsmoke",		CONST_ME_REDSMOKE},
-	{"yellowsmoke",		CONST_ME_YELLOWSMOKE},
-	{"greensmoke",		CONST_ME_GREENSMOKE},
-	{"purplesmoke",		CONST_ME_PURPLESMOKE},
 };
 
 ShootTypeNames shootTypeNames = {
@@ -604,41 +548,6 @@ ShootTypeNames shootTypeNames = {
 	{"snowball",		CONST_ANI_SNOWBALL},
 	{"powerbolt",		CONST_ANI_POWERBOLT},
 	{"poison",		CONST_ANI_POISON},
-	{"infernalbolt",	CONST_ANI_INFERNALBOLT},
-	{"huntingspear",	CONST_ANI_HUNTINGSPEAR},
-	{"enchantedspear",	CONST_ANI_ENCHANTEDSPEAR},
-	{"redstar",		CONST_ANI_REDSTAR},
-	{"greenstar",		CONST_ANI_GREENSTAR},
-	{"royalspear",		CONST_ANI_ROYALSPEAR},
-	{"sniperarrow",		CONST_ANI_SNIPERARROW},
-	{"onyxarrow",		CONST_ANI_ONYXARROW},
-	{"piercingbolt",	CONST_ANI_PIERCINGBOLT},
-	{"whirlwindsword",	CONST_ANI_WHIRLWINDSWORD},
-	{"whirlwindaxe",	CONST_ANI_WHIRLWINDAXE},
-	{"whirlwindclub",	CONST_ANI_WHIRLWINDCLUB},
-	{"etherealspear",	CONST_ANI_ETHEREALSPEAR},
-	{"ice",			CONST_ANI_ICE},
-	{"earth",		CONST_ANI_EARTH},
-	{"holy",		CONST_ANI_HOLY},
-	{"suddendeath",		CONST_ANI_SUDDENDEATH},
-	{"flasharrow",		CONST_ANI_FLASHARROW},
-	{"flammingarrow",	CONST_ANI_FLAMMINGARROW},
-	{"shiverarrow",		CONST_ANI_SHIVERARROW},
-	{"energyball",		CONST_ANI_ENERGYBALL},
-	{"smallice",		CONST_ANI_SMALLICE},
-	{"smallholy",		CONST_ANI_SMALLHOLY},
-	{"smallearth",		CONST_ANI_SMALLEARTH},
-	{"eartharrow",		CONST_ANI_EARTHARROW},
-	{"explosion",		CONST_ANI_EXPLOSION},
-	{"cake",		CONST_ANI_CAKE},
-	{"tarsalarrow",		CONST_ANI_TARSALARROW},
-	{"vortexbolt",		CONST_ANI_VORTEXBOLT},
-	{"prismaticbolt",	CONST_ANI_PRISMATICBOLT},
-	{"crystallinearrow",	CONST_ANI_CRYSTALLINEARROW},
-	{"drillbolt",		CONST_ANI_DRILLBOLT},
-	{"envenomedarrow",	CONST_ANI_ENVENOMEDARROW},
-	{"gloothspear",		CONST_ANI_GLOOTHSPEAR},
-	{"simplearrow",		CONST_ANI_SIMPLEARROW},
 };
 
 CombatTypeNames combatTypeNames = {
@@ -694,8 +603,6 @@ SkullNames skullNames = {
 	{"green",	SKULL_GREEN},
 	{"white",	SKULL_WHITE},
 	{"red",		SKULL_RED},
-	{"black",	SKULL_BLACK},
-	{"orange",	SKULL_ORANGE},
 };
 
 MagicEffectClasses getMagicEffect(const std::string& strValue)
@@ -750,32 +657,6 @@ Skulls_t getSkullType(const std::string& strValue)
 		return skullType->second;
 	}
 	return SKULL_NONE;
-}
-
-std::string getSpecialSkillName(uint8_t skillid)
-{
-	switch (skillid) {
-		case SPECIALSKILL_CRITICALHITCHANCE:
-			return "critical hit chance";
-
-		case SPECIALSKILL_CRITICALHITAMOUNT:
-			return "critical extra damage";
-
-		case SPECIALSKILL_LIFELEECHCHANCE:
-			return "hitpoints leech chance";
-
-		case SPECIALSKILL_LIFELEECHAMOUNT:
-			return "hitpoints leech amount";
-
-		case SPECIALSKILL_MANALEECHCHANCE:
-			return "manapoints leech chance";
-
-		case SPECIALSKILL_MANALEECHAMOUNT:
-			return "mana points leech amount";
-
-		default:
-			return "unknown";
-	}
 }
 
 std::string getSkillName(uint8_t skillid)
@@ -909,14 +790,8 @@ size_t combatTypeToIndex(CombatType_t combatType)
 			return 6;
 		case COMBAT_HEALING:
 			return 7;
-		case COMBAT_DROWNDAMAGE:
-			return 8;
-		case COMBAT_ICEDAMAGE:
-			return 9;
-		case COMBAT_HOLYDAMAGE:
-			return 10;
 		case COMBAT_DEATHDAMAGE:
-			return 11;
+			return 8;
 		default:
 			return 0;
 	}
