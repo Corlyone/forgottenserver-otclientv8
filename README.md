@@ -14,11 +14,8 @@ Here [Support via paypal](https://tiny.cc/donate-dev) you can donate so that eve
 
 ### Support
 
-If you need help, please visit the [support forum on OTClient](http://otclient.net/forumdisplay.php?fid=4). Our issue tracker is not a support forum, and using it as one will result in your issue being closed. If you were unable to get assistance in the support forum, you should consider [asking for professional help](http://otclient.net/forumdisplay.php?fid=29) which supports cumminity financially.
+If you need help, please visit the [support forum on OTClient](http://otclient.net/forumdisplay.php?fid=4). Our issue tracker is not a support forum, and using it as one will result in your issue being closed. If you were unable to get assistance in the support forum, you should consider [asking for professional help](https://otland.net/members/nvso.40140/) which supports cumminity financially.
 
-### OTClientV8 features
-
-Since commit 3000th, OTClientV8 features are being added to repository. For description of each feature please follow [official thread on OTClient.net](http://otclient.net/showthread.php?tid=303)
 
 ### Issues
 
