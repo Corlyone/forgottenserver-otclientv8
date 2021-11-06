@@ -559,12 +559,6 @@ bool IOLoginData::saveItems(const Player* player, const ItemBlockList& itemList,
 		++runningId;
 
 		if (Container* container = item->getContainer()) {
-			auto it = openContainers.find(container);
-			if (it == openContainers.end()) {
-				container->resetAutoOpen();
-			} else {
-				container->setAutoOpen(it->second);
-			}
 			queue.emplace_back(container, runningId);
 		}
 

@@ -1675,6 +1675,42 @@ ReturnValue Game::internalTeleport(Thing* thing, const Position& newPos, bool pu
 	return RETURNVALUE_NOTPOSSIBLE;
 }
 
+slots_t getSlotType(const ItemType& it)
+{
+	slots_t slot = CONST_SLOT_RIGHT;
+	if (it.weaponType != WeaponType_t::WEAPON_SHIELD) {
+		int32_t slotPosition = it.slotPosition;
+
+		if (slotPosition & SLOTP_HEAD) {
+			slot = CONST_SLOT_HEAD;
+		}
+		else if (slotPosition & SLOTP_NECKLACE) {
+			slot = CONST_SLOT_NECKLACE;
+		}
+		else if (slotPosition & SLOTP_ARMOR) {
+			slot = CONST_SLOT_ARMOR;
+		}
+		else if (slotPosition & SLOTP_LEGS) {
+			slot = CONST_SLOT_LEGS;
+		}
+		else if (slotPosition & SLOTP_FEET) {
+			slot = CONST_SLOT_FEET;
+		}
+		else if (slotPosition & SLOTP_RING) {
+			slot = CONST_SLOT_RING;
+		}
+		else if (slotPosition & SLOTP_AMMO) {
+			slot = CONST_SLOT_AMMO;
+		}
+		else if (slotPosition & SLOTP_TWO_HAND || slotPosition & SLOTP_LEFT) {
+			slot = CONST_SLOT_LEFT;
+		}
+	}
+
+	return slot;
+}
+
+
 //Implementation of player invoked events
 
 void Game::playerMove(uint32_t playerId, Direction direction)
