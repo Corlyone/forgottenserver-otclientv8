@@ -1234,6 +1234,7 @@ void ProtocolGame::sendStats()
 
 void ProtocolGame::sendTextMessage(const TextMessage& message)
 {
+	NetworkMessage msg;
 	msg.addByte(0xB4);
 	msg.addByte(message.type);
 	msg.addString(message.text);
@@ -1360,7 +1361,7 @@ void ProtocolGame::sendMarketEnter(uint32_t depotId)
 	player->setInMarket(true);
 
 	std::map<uint16_t, uint32_t> depotItems;
-	std::forward_list<Container*> containerList { depotChest, player->getInbox() };
+	std::forward_list<Container*> containerList { depotChest };
 
 	do {
 		Container* container = containerList.front();
@@ -2477,7 +2478,6 @@ void ProtocolGame::AddCreature(NetworkMessage& msg, const Creature* creature, bo
 		msg.add<uint16_t>(0x61);
 		msg.add<uint32_t>(remove);
 		msg.add<uint32_t>(creature->getID());
-		msg.addByte(creatureType);
 		msg.addString(creature->getName());
 	}
 

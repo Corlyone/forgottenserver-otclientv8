@@ -111,9 +111,6 @@ void Game::setGameState(GameState_t newState)
 			raids.startup();
 
 			quests.loadFromXml();
-			auras.loadFromXml();
-			wings.loadFromXml();
-			shaders.loadFromXml();
 
 			loadMotdNum();
 			loadPlayersRecord();
@@ -1020,7 +1017,7 @@ ReturnValue Game::internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder,
 			return RETURNVALUE_NOTPOSSIBLE;
 		}
 	}
-	
+
 	Item* toItem = nullptr;
 
 	Cylinder* subCylinder;
@@ -1192,9 +1189,6 @@ ReturnValue Game::internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder,
 
 	if (actorPlayer && fromPos && toPos) {
 		g_events->eventPlayerOnItemMoved(actorPlayer, item, count, *fromPos, *toPos, fromCylinder, toCylinder);
-		if (toPos == playerPos) {
-			player->setCurrentTileHeight(player->getTile()->getHeight());
-		}
 	}
 
 	return ret;
@@ -2790,13 +2784,6 @@ void Game::playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint8_t coun
 		return;
 	}
 
-	int32_t onBuy, onSell;
-
-	Npc* merchant = player->getShopOwner(onBuy, onSell);
-	if (!merchant) {
-		return;
-	}
-
 	const ItemType& it = Item::items.getItemIdByClientId(spriteId);
 	if (it.id == 0) {
 		return;
@@ -2808,12 +2795,6 @@ void Game::playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint8_t coun
 	} else {
 		subType = count;
 	}
-
-	if (!player->hasShopItemForSale(it.id, subType)) {
-		return;
-	}
-
-	merchant->onPlayerTrade(player, onBuy, it.id, subType, amount, ignoreCap, inBackpacks);
 }
 
 void Game::playerSellItem(uint32_t playerId, uint16_t spriteId, uint8_t count, uint8_t amount, bool ignoreEquipped)
@@ -2829,10 +2810,6 @@ void Game::playerSellItem(uint32_t playerId, uint16_t spriteId, uint8_t count, u
 
 	int32_t onBuy, onSell;
 
-	Npc* merchant = player->getShopOwner(onBuy, onSell);
-	if (!merchant) {
-		return;
-	}
 
 	const ItemType& it = Item::items.getItemIdByClientId(spriteId);
 	if (it.id == 0) {
@@ -2846,17 +2823,6 @@ void Game::playerSellItem(uint32_t playerId, uint16_t spriteId, uint8_t count, u
 		subType = count;
 	}
 
-	merchant->onPlayerTrade(player, onSell, it.id, subType, amount, ignoreEquipped);
-}
-
-void Game::playerCloseShop(uint32_t playerId)
-{
-	Player* player = getPlayerByID(playerId);
-	if (!player) {
-		return;
-	}
-
-	player->closeShopWindow();
 }
 
 void Game::playerLookInShop(uint32_t playerId, uint16_t spriteId, uint8_t count)
@@ -2868,10 +2834,6 @@ void Game::playerLookInShop(uint32_t playerId, uint16_t spriteId, uint8_t count)
 
 	int32_t onBuy, onSell;
 
-	Npc* merchant = player->getShopOwner(onBuy, onSell);
-	if (!merchant) {
-		return;
-	}
 
 	const ItemType& it = Item::items.getItemIdByClientId(spriteId);
 	if (it.id == 0) {
@@ -2885,9 +2847,6 @@ void Game::playerLookInShop(uint32_t playerId, uint16_t spriteId, uint8_t count)
 		subType = count;
 	}
 
-	if (!player->hasShopItemForSale(it.id, subType)) {
-		return;
-	}
 
 	if (!g_events->eventPlayerOnLookInShop(player, &it, subType)) {
 		return;
@@ -3084,16 +3043,6 @@ void Game::playerRequestRemoveVip(uint32_t playerId, uint32_t guid)
 	}
 
 	player->removeVIP(guid);
-}
-
-void Game::playerRequestEditVip(uint32_t playerId, uint32_t guid, const std::string& description, uint32_t icon, bool notify)
-{
-	Player* player = getPlayerByID(playerId);
-	if (!player) {
-		return;
-	}
-
-	player->editVIP(guid, description, icon, notify);
 }
 
 void Game::playerTurn(uint32_t playerId, Direction dir)
@@ -3703,12 +3652,12 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 		Player* attackerPlayer;
 		if (attacker) {
 			attackerPlayer = attacker->getPlayer();
-		} else {
+		}
+		else {
 			attackerPlayer = nullptr;
 		}
 
 		Player* targetPlayer = target->getPlayer();
-
 		if (damage.origin != ORIGIN_NONE) {
 			const auto& events = target->getCreatureEvents(CREATURE_EVENT_HEALTHCHANGE);
 			if (!events.empty()) {
@@ -3743,28 +3692,34 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 					ss << "You heal " << target->getNameDescription() << " for " << damageString;
 					message.type = MESSAGE_EVENT_DEFAULT;
 					message.text = ss.str();
-				} else if (tmpPlayer == targetPlayer) {
+				}
+				else if (tmpPlayer == targetPlayer) {
 					ss.str({});
 					if (!attacker) {
 						ss << "You were healed";
-					} else if (targetPlayer == attackerPlayer) {
+					}
+					else if (targetPlayer == attackerPlayer) {
 						ss << "You healed yourself";
-					} else {
+					}
+					else {
 						ss << "You were healed by " << attacker->getNameDescription();
 					}
 					ss << " for " << damageString;
 					message.type = MESSAGE_EVENT_DEFAULT;
 					message.text = ss.str();
-				} else {
+				}
+				else {
 					if (spectatorMessage.empty()) {
 						ss.str({});
 						if (!attacker) {
 							ss << ucfirst(target->getNameDescription()) << " was healed";
-						} else {
+						}
+						else {
 							ss << ucfirst(attacker->getNameDescription()) << " healed ";
 							if (attacker == target) {
 								ss << (targetPlayer ? (targetPlayer->getSex() == PLAYERSEX_FEMALE ? "herself" : "himself") : "itself");
-							} else {
+							}
+							else {
 								ss << target->getNameDescription();
 							}
 						}
@@ -3775,10 +3730,10 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 					message.text = spectatorMessage;
 				}
 				tmpPlayer->sendTextMessage(message);
-				tmpPlayer->sendColoredText(coloredText);
 			}
 		}
-	} else {
+	}
+	else {
 		if (!target->isAttackable()) {
 			if (!target->isInGhostMode()) {
 				addMagicEffect(targetPos, CONST_ME_POFF);
@@ -3789,12 +3744,12 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 		Player* attackerPlayer;
 		if (attacker) {
 			attackerPlayer = attacker->getPlayer();
-		} else {
+		}
+		else {
 			attackerPlayer = nullptr;
 		}
 
 		Player* targetPlayer = target->getPlayer();
-
 		damage.primary.value = std::abs(damage.primary.value);
 		damage.secondary.value = std::abs(damage.secondary.value);
 
@@ -3850,19 +3805,23 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 						ss << ucfirst(target->getNameDescription()) << " loses " << damageString + " mana due to your attack.";
 						message.type = MESSAGE_STATUS_SMALL;
 						message.text = ss.str();
-					} else if (tmpPlayer == targetPlayer) {
+					}
+					else if (tmpPlayer == targetPlayer) {
 						ss.str({});
 						ss << "You lose " << damageString << " mana";
 						if (!attacker) {
 							ss << '.';
-						} else if (targetPlayer == attackerPlayer) {
+						}
+						else if (targetPlayer == attackerPlayer) {
 							ss << " due to your own attack.";
-						} else {
+						}
+						else {
 							ss << " due to an attack by " << attacker->getNameDescription() << '.';
 						}
 						message.type = MESSAGE_EVENT_DEFAULT;
 						message.text = ss.str();
-					} else {
+					}
+					else {
 						if (spectatorMessage.empty()) {
 							ss.str({});
 							ss << ucfirst(target->getNameDescription()) << " loses " << damageString + " mana";
@@ -3870,7 +3829,8 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 								ss << " due to ";
 								if (attacker == target) {
 									ss << (targetPlayer->getSex() == PLAYERSEX_FEMALE ? "her own attack" : "his own attack");
-								} else {
+								}
+								else {
 									ss << "an attack by " << attacker->getNameDescription();
 								}
 							}
@@ -3912,7 +3872,8 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 		if (damage.primary.value >= targetHealth) {
 			damage.primary.value = targetHealth;
 			damage.secondary.value = 0;
-		} else if (damage.secondary.value) {
+		}
+		else if (damage.secondary.value) {
 			damage.secondary.value = std::min<int32_t>(damage.secondary.value, targetHealth - damage.primary.value);
 		}
 
@@ -3925,25 +3886,17 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 			map.getSpectators(spectators, targetPos, true, true);
 		}
 
-		message.primary.value = damage.primary.value;
-		message.secondary.value = damage.secondary.value;
+		coloredText.text = std::to_string(damage.primary.value);
 
 		uint8_t hitEffect;
-		if (message.primary.value) {
-			combatGetTypeInfo(damage.primary.type, target, message.primary.color, hitEffect);
+		if (!coloredText.text.empty()) {
+			combatGetTypeInfo(damage.primary.type, target, coloredText.color, hitEffect);
 			if (hitEffect != CONST_ME_NONE) {
 				addMagicEffect(spectators, targetPos, hitEffect);
 			}
 		}
 
-		if (message.secondary.value) {
-			combatGetTypeInfo(damage.secondary.type, target, message.secondary.color, hitEffect);
-			if (hitEffect != CONST_ME_NONE) {
-				addMagicEffect(spectators, targetPos, hitEffect);
-			}
-		}
-
-		if (message.primary.color != TEXTCOLOR_NONE || message.secondary.color != TEXTCOLOR_NONE) {
+		if (coloredText.color != TEXTCOLOR_NONE) {
 			std::stringstream ss;
 
 			ss << realDamage << (realDamage != 1 ? " hitpoints" : " hitpoint");
@@ -3953,29 +3906,33 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 
 			for (Creature* spectator : spectators) {
 				Player* tmpPlayer = spectator->getPlayer();
-				if (tmpPlayer->getPosition().z != targetPos.z) {
+				if (!tmpPlayer || (tmpPlayer && tmpPlayer->getPosition().z != targetPos.z)) {
 					continue;
 				}
 
 				if (tmpPlayer == attackerPlayer && attackerPlayer != targetPlayer) {
 					ss.str({});
 					ss << ucfirst(target->getNameDescription()) << " loses " << damageString << " due to your attack.";
-					message.type = MESSAGE_STATUS_SMALL;
+					message.type = MESSAGE_EVENT_DEFAULT;
 					message.text = ss.str();
-				} else if (tmpPlayer == targetPlayer) {
+				}
+				else if (tmpPlayer == targetPlayer) {
 					ss.str({});
 					ss << "You lose " << damageString;
 					if (!attacker) {
 						ss << '.';
-					} else if (targetPlayer == attackerPlayer) {
+					}
+					else if (targetPlayer == attackerPlayer) {
 						ss << " due to your own attack.";
-					} else {
+					}
+					else {
 						ss << " due to an attack by " << attacker->getNameDescription() << '.';
 					}
 					message.type = MESSAGE_EVENT_DEFAULT;
 					message.text = ss.str();
-				} else {
-					message.type = MESSAGE_STATUS_SMALL;
+				}
+				else {
+					message.type = MESSAGE_EVENT_DEFAULT;
 
 					if (spectatorMessage.empty()) {
 						ss.str({});
@@ -3985,10 +3942,12 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 							if (attacker == target) {
 								if (targetPlayer) {
 									ss << (targetPlayer->getSex() == PLAYERSEX_FEMALE ? "her own attack" : "his own attack");
-								} else {
+								}
+								else {
 									ss << "its own attack";
 								}
-							} else {
+							}
+							else {
 								ss << "an attack by " << attacker->getNameDescription();
 							}
 						}
@@ -4910,7 +4869,7 @@ void Game::playerCreateMarketOffer(uint32_t playerId, uint8_t type, uint16_t spr
 			return;
 		}
 
-		std::forward_list<Item*> itemList = getMarketItemList(it.wareId, amount, depotChest, player->getInbox());
+		std::forward_list<Item*> itemList = getMarketItemList(it.wareId, amount, depotChest);
 		if (itemList.empty()) {
 			return;
 		}
@@ -4981,7 +4940,7 @@ void Game::playerCancelMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 			while (tmpAmount > 0) {
 				int32_t stackCount = std::min<int32_t>(100, tmpAmount);
 				Item* item = Item::CreateItem(it.id, stackCount);
-				if (internalAddItem(player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
+				if (internalAddItem(player->getDepotChest(player->getLastDepotId(), false), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
 					delete item;
 					break;
 				}
@@ -4998,7 +4957,7 @@ void Game::playerCancelMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 
 			for (uint16_t i = 0; i < offer.amount; ++i) {
 				Item* item = Item::CreateItem(it.id, subType);
-				if (internalAddItem(player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
+				if (internalAddItem(player->getDepotChest(player->getLastDepotId(), false), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
 					delete item;
 					break;
 				}
@@ -5050,7 +5009,7 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 			return;
 		}
 
-		std::forward_list<Item*> itemList = getMarketItemList(it.wareId, amount, depotChest, player->getInbox());
+		std::forward_list<Item*> itemList = getMarketItemList(it.wareId, amount, depotChest);
 		if (itemList.empty()) {
 			return;
 		}
@@ -5088,7 +5047,7 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 			while (tmpAmount > 0) {
 				uint16_t stackCount = std::min<uint16_t>(100, tmpAmount);
 				Item* item = Item::CreateItem(it.id, stackCount);
-				if (internalAddItem(buyerPlayer->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
+				if (internalAddItem(buyerPlayer->getDepotChest(player->getLastDepotId(), false), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
 					delete item;
 					break;
 				}
@@ -5105,7 +5064,7 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 
 			for (uint16_t i = 0; i < amount; ++i) {
 				Item* item = Item::CreateItem(it.id, subType);
-				if (internalAddItem(buyerPlayer->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
+				if (internalAddItem(buyerPlayer->getDepotChest(player->getLastDepotId(), false), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
 					delete item;
 					break;
 				}
@@ -5130,7 +5089,7 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 			while (tmpAmount > 0) {
 				uint16_t stackCount = std::min<uint16_t>(100, tmpAmount);
 				Item* item = Item::CreateItem(it.id, stackCount);
-				if (internalAddItem(player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
+				if (internalAddItem(player->getDepotChest(player->getLastDepotId(), false), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
 					delete item;
 					break;
 				}
@@ -5147,7 +5106,7 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 
 			for (uint16_t i = 0; i < amount; ++i) {
 				Item* item = Item::CreateItem(it.id, subType);
-				if (internalAddItem(player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
+				if (internalAddItem(player->getDepotChest(player->getLastDepotId(), false), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
 					delete item;
 					break;
 				}
@@ -5200,7 +5159,7 @@ std::forward_list<Item*> Game::getMarketItemList(uint16_t wareId, uint16_t suffi
 	std::forward_list<Item*> itemList;
 	uint16_t count = 0;
 
-	std::list<Container*> containers { depotChest, inbox };
+	std::list<Container*> containers { depotChest};
 	do {
 		Container* container = containers.front();
 		containers.pop_front();
@@ -5405,7 +5364,6 @@ bool Game::reload(ReloadTypes_t reloadType)
 {
 	switch (reloadType) {
 		case RELOAD_TYPE_ACTIONS: return g_actions->reload();
-		case RELOAD_TYPE_AURAS: return auras.reload();
 		case RELOAD_TYPE_CHAT: return g_chat->load();
 		case RELOAD_TYPE_CONFIG: return g_config.reload();
 		case RELOAD_TYPE_CREATURESCRIPTS: {
@@ -5425,7 +5383,6 @@ bool Game::reload(ReloadTypes_t reloadType)
 
 		case RELOAD_TYPE_QUESTS: return quests.reload();
 		case RELOAD_TYPE_RAIDS: return raids.reload() && raids.startup();
-		case RELOAD_TYPE_SHADERS: return shaders.reload();
 		case RELOAD_TYPE_SPELLS: {
 			if (!g_spells->reload()) {
 				std::cout << "[Error - Game::reload] Failed to reload spells." << std::endl;
@@ -5444,8 +5401,6 @@ bool Game::reload(ReloadTypes_t reloadType)
 			g_weapons->loadDefaults();
 			return results;
 		}
-
-		case RELOAD_TYPE_WINGS: return wings.reload();
 
 		case RELOAD_TYPE_SCRIPTS: {
 			// commented out stuff is TODO, once we approach further in revscriptsys
@@ -5497,7 +5452,6 @@ bool Game::reload(ReloadTypes_t reloadType)
 			g_weapons->clear(true);
 			g_weapons->loadDefaults();
 			quests.reload();
-			shaders.reload();
 			g_globalEvents->reload();
 			g_events->load();
 			g_chat->load();

@@ -116,13 +116,21 @@ bool IOLoginData::loginserverAuthentication(uint32_t accountNumber, const std::s
 	return true;
 }
 
-uint32_t IOLoginData::gameworldAuthentication(uint32_t accountNumber, const std::string& password, std::string& characterName, std::string& token, uint32_t tokenTime)
+uint32_t IOLoginData::gameworldAuthentication(uint32_t accountNumber, const std::string& password, std::string& characterName)
 {
 	Database& db = Database::getInstance();
 
 	std::ostringstream query;
-	query << "SELECT `id`, `password` FROM `accounts` WHERE `number` = " << accountNumber;
+	std::string credentialType = "number";
+	query << "SHOW COLUMNS FROM `accounts` LIKE 'name'";
 	DBResult_ptr result = db.storeQuery(query.str());
+	if (result) {
+		credentialType = "name";
+	}
+
+	query.str(std::string());
+	query << "SELECT `id`, `password` FROM `accounts` WHERE " << credentialType << " = " << accountNumber;
+	result = db.storeQuery(query.str());
 	if (!result) {
 		return 0;
 	}
@@ -143,6 +151,7 @@ uint32_t IOLoginData::gameworldAuthentication(uint32_t accountNumber, const std:
 	if (result->getNumber<uint32_t>("account_id") != accountId || result->getNumber<uint64_t>("deletion") != 0) {
 		return 0;
 	}
+
 	characterName = result->getString("name");
 	return accountId;
 }

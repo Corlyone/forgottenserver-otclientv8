@@ -8912,22 +8912,7 @@ int LuaScriptInterface::luaPlayerHasOutfit(lua_State* L)
 	Player* player = getUserdata<Player>(L, 1);
 	if (player) {
 		uint16_t lookType = getNumber<uint16_t>(L, 2);
-		uint8_t addon = getNumber<uint8_t>(L, 3, 0);
 		pushBoolean(L, player->canWear(lookType));
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
-}
-
-int LuaScriptInterface::luaPlayerCanWearOutfit(lua_State* L)
-{
-	// player:canWearOutfit(lookType[, addon = 0])
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		uint16_t lookType = getNumber<uint16_t>(L, 2);
-		uint8_t addon = getNumber<uint8_t>(L, 3, 0);
-		pushBoolean(L, player->canWear(lookType, addon));
 	} else {
 		lua_pushnil(L);
 	}

@@ -1525,7 +1525,6 @@ void Player::addExperience(Creature* source, uint64_t exp, bool sendText/* = fal
 
 		const uint32_t protectionLevel = static_cast<uint32_t>(g_config.getNumber(ConfigManager::PROTECTION_LEVEL));
 		if (prevLevel < protectionLevel && level >= protectionLevel) {
-			g_game.updateCreatureWalkthrough(this);
 		}
 
 		if (party) {
@@ -1608,7 +1607,6 @@ void Player::removeExperience(uint64_t exp, bool sendText/* = false*/)
 
 		const uint32_t protectionLevel = static_cast<uint32_t>(g_config.getNumber(ConfigManager::PROTECTION_LEVEL));
 		if (oldLevel >= protectionLevel && level < protectionLevel) {
-			g_game.updateCreatureWalkthrough(this);
 		}
 
 		if (party) {
@@ -3415,28 +3413,6 @@ bool Player::canWear(uint32_t lookType) const
 
 	if (outfit->premium && !isPremium()) {
 		return false; //have lookType on list and addons don't match
-	}
-	return false;
-}
-
-bool Player::hasOutfit(uint32_t lookType, uint8_t addons)
-{
-	const Outfit* outfit = Outfits::getInstance().getOutfitByLookType(sex, lookType);
-	if (!outfit) {
-		return false;
-	}
-
-	if (outfit->unlocked && addons == 0) {
-		return true;
-	}
-
-	for (const OutfitEntry& outfitEntry : outfits) {
-		if (outfitEntry.lookType == lookType) {
-			if (outfitEntry.addons == addons || outfitEntry.addons == 3 || addons == 0){
-				return true;
-			}
-			return false; //have lookType on list and addons don't match
-		}
 	}
 	return false;
 }

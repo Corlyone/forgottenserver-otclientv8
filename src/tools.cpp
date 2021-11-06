@@ -559,9 +559,6 @@ CombatTypeNames combatTypeNames = {
 	{COMBAT_LIFEDRAIN, 		"lifedrain"},
 	{COMBAT_MANADRAIN, 		"manadrain"},
 	{COMBAT_HEALING, 		"healing"},
-	{COMBAT_DROWNDAMAGE, 		"drown"},
-	{COMBAT_ICEDAMAGE, 		"ice"},
-	{COMBAT_HOLYDAMAGE, 		"holy"},
 	{COMBAT_DEATHDAMAGE, 		"death"},
 };
 
