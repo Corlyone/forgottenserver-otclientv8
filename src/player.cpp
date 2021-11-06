@@ -3412,7 +3412,7 @@ bool Player::canWear(uint32_t lookType) const
 	}
 
 	if (outfit->premium && !isPremium()) {
-		return false; //have lookType on list and addons don't match
+		return false;
 	}
 	return false;
 }

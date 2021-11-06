@@ -709,9 +709,6 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 				damage.primary.value /= 2;
 				damage.secondary.value /= 2;
 			}
-
-			Combat::checkCriticalHit(casterPlayer, damage);
-			Combat::checkLeech(casterPlayer, damage);
 		}
 	}
 
