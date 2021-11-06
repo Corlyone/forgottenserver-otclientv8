@@ -2218,7 +2218,6 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "addOutfit", LuaScriptInterface::luaPlayerAddOutfit);
 	registerMethod("Player", "removeOutfit", LuaScriptInterface::luaPlayerRemoveOutfit);
 	registerMethod("Player", "hasOutfit", LuaScriptInterface::luaPlayerHasOutfit);
-	registerMethod("Player", "canWearOutfit", LuaScriptInterface::luaPlayerCanWearOutfit);
 	registerMethod("Player", "sendOutfitWindow", LuaScriptInterface::luaPlayerSendOutfitWindow);
 
 	registerMethod("Player", "getPremiumDays", LuaScriptInterface::luaPlayerGetPremiumDays);

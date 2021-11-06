@@ -935,7 +935,6 @@ class LuaScriptInterface
 		static int luaPlayerAddOutfit(lua_State* L);
 		static int luaPlayerRemoveOutfit(lua_State* L);
 		static int luaPlayerHasOutfit(lua_State* L);
-		static int luaPlayerCanWearOutfit(lua_State* L);
 		static int luaPlayerSendOutfitWindow(lua_State* L);
 
 		static int luaPlayerGetPremiumDays(lua_State* L);
