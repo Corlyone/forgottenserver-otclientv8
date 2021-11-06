@@ -123,6 +123,7 @@ bool ConfigManager::load()
 
 		integer[SQL_PORT] = getGlobalNumber(L, "mysqlPort", 3306);
 		integer[GAME_PORT] = getGlobalNumber(L, "gameProtocolPort", 7172);
+		integer[CAST_PORT] = getGlobalNumber(L, "liveCastProtocolPort", 7173);
 		integer[LOGIN_PORT] = getGlobalNumber(L, "loginProtocolPort", 7171);
 		integer[STATUS_PORT] = getGlobalNumber(L, "statusProtocolPort", 7171);
 
@@ -175,6 +176,7 @@ bool ConfigManager::load()
 	boolean[CLEAN_PROTECTION_ZONES] = getGlobalBoolean(L, "cleanProtectionZones", false);
 	boolean[HOUSE_DOOR_SHOW_PRICE] = getGlobalBoolean(L, "houseDoorShowPrice", true);
 	boolean[PACKET_COMPRESSION] = getGlobalBoolean(L, "packetCompression", true);
+	boolean[LIVE_CAST_ENABLED] = getGlobalBoolean(L, "liveCastEnabled", true);
 
 	string[DEFAULT_PRIORITY] = getGlobalString(L, "defaultPriority", "high");
 	string[SERVER_NAME] = getGlobalString(L, "serverName", "");

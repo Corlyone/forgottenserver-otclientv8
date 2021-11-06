@@ -49,6 +49,9 @@ class TalkAction : public Event
 		std::string getSeparator() const {
 			return separator;
 		}
+		uint16_t getChannel() const {
+			return channel;
+		}
 		void setSeparator(std::string sep) {
 			separator = sep;
 		}
@@ -62,6 +65,7 @@ class TalkAction : public Event
 
 		std::string words;
 		std::string separator = "\"";
+		uint16_t channel = 0;
 };
 
 class TalkActions final : public BaseEvents

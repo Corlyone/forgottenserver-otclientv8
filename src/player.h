@@ -211,6 +211,10 @@ class Player final : public Creature, public Cylinder
 			return guildWarVector;
 		}
 
+		const std::map<uint8_t, OpenContainer>& getOpenContainers() const {
+			return openContainers;
+		}
+
 		Vocation* getVocation() const {
 			return vocation;
 		}
@@ -996,7 +1000,40 @@ class Player final : public Creature, public Cylinder
 				client->writeToOutputBuffer(message);
 			}
 		}
-
+		//Live Cast
+		bool isLiveCasting() {
+			return client && client->castinfo.enabled;
+		}
+		bool startLiveCasting(std::string password) {
+			return client && client->startLiveCasting(password);
+		}
+		void stopLiveCasting() {
+			if (client) {
+				client->stopLiveCasting();
+			}
+		}
+		void pauseLiveCasting(std::string reason) {
+			if (client) {
+				client->pauseLiveCasting(reason);
+			}
+		}
+		// cast methods;
+		bool kickCastSpectator(std::string name) {
+			return client && client->kickCastSpectator(name);
+		}
+		bool banCastSpectator(std::string name) {
+			return client && client->banCastSpectator(name);
+		}
+		bool unBanCastSpectator(std::string name) {
+			return client && client->unBanCastSpectator(name);
+		}
+		bool muteCastSpectator(std::string name) {
+			return client && client->muteCastSpectator(name);
+		}
+		bool unMuteCastSpectator(std::string name) {
+			return client && client->unMuteCastSpectator(name);
+		}
+		//end Live Cast
 		void sendProgressbar(uint32_t id, uint32_t duration, bool ltr = true) {
             if (client) {
                 client->sendProgressbar(id, duration, ltr);
@@ -1060,11 +1097,6 @@ class Player final : public Creature, public Cylinder
 		}
 		void setCurrentTileHeight(uint16_t height) {
 			currentTileHeight = height;
-		}
-
-		const std::map<uint8_t, OpenContainer>& getOpenContainers() const
-		{
-			return openContainers;
 		}
 
 	private:
@@ -1268,6 +1300,8 @@ class Player final : public Creature, public Cylinder
 		friend class Actions;
 		friend class IOLoginData;
 		friend class ProtocolGame;
+		friend class ProtocolSpectator;
+		friend class ProtocolGameBase;
 };
 
 #endif

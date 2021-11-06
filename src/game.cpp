@@ -1836,6 +1836,11 @@ void Game::playerCloseChannel(uint32_t playerId, uint16_t channelId)
 		return;
 	}
 
+	if (channelId == CHANNEL_CAST) {
+		player->stopLiveCasting();
+		return;
+	}
+
 	g_chat->removeUserFromChannel(*player, channelId);
 }
 
@@ -2943,6 +2948,10 @@ void Game::playerSetFightModes(uint32_t playerId, fightMode_t fightMode, bool ch
 	player->setFightMode(fightMode);
 	player->setChaseMode(chaseMode);
 	player->setSecureMode(secureMode);
+
+	if (player->isLiveCasting()) {
+		player->sendFightModes(); // to update the spectator
+	}
 }
 
 void Game::playerRequestAddVip(uint32_t playerId, const std::string& name)
@@ -3082,7 +3091,7 @@ void Game::playerSay(uint32_t playerId, uint16_t channelId, SpeakClasses type,
 
 	player->resetIdleTime();
 
-	if (playerSaySpell(player, type, text)) {
+	if (playerSaySpell(player, type, channelId, text)) {
 		return;
 	}
 
@@ -3100,6 +3109,11 @@ void Game::playerSay(uint32_t playerId, uint16_t channelId, SpeakClasses type,
 
 	if (type != TALKTYPE_PRIVATE) {
 		player->removeMessageBuffer();
+	}
+
+	if (channelId == CHANNEL_CAST) {
+		player->sendChannelMessage(player->getName(), text, TALKTYPE_CHANNEL_O, CHANNEL_CAST);
+		return;
 	}
 
 	switch (type) {
@@ -3136,11 +3150,11 @@ void Game::playerSay(uint32_t playerId, uint16_t channelId, SpeakClasses type,
 	}
 }
 
-bool Game::playerSaySpell(Player* player, SpeakClasses type, const std::string& text)
+bool Game::playerSaySpell(Player* player, SpeakClasses type, uint16_t channelId, const std::string& text)
 {
 	std::string words = text;
 
-	TalkActionResult_t result = g_talkActions->playerSaySpell(player, type, words);
+	TalkActionResult_t result = g_talkActions->playerSaySpell (player, type, words);
 	if (result == TALKACTION_BREAK) {
 		return true;
 	}

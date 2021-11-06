@@ -848,10 +848,14 @@ void Player::sendAddContainerItem(const Container* container, const Item* item)
 			continue;
 		}
 
+		uint16_t slot = openContainer.index;
 		if (openContainer.index >= container->capacity()) {
-			item = container->getItemByIndex(openContainer.index - 1);
+			item = container->getItemByIndex(openContainer.index);
 		}
-		client->sendAddContainerItem(it.first, item);
+
+		if (item) {
+			client->sendAddContainerItem(it.first, slot, item);
+		}
 	}
 }
 
@@ -898,7 +902,7 @@ void Player::sendRemoveContainerItem(const Container* container, uint16_t slot)
 			sendContainer(it.first, container, false, firstIndex);
 		}
 
-		client->sendRemoveContainerItem(it.first, std::max<uint16_t>(slot, firstIndex));
+		client->sendRemoveContainerItem(it.first, std::max<uint16_t>(slot, firstIndex), container->getItemByIndex(container->capacity() + firstIndex));
 	}
 }
 

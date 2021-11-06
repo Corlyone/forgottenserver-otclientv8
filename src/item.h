@@ -312,6 +312,7 @@ class ItemAttributes
 						break;
 					}
 
+
 					case 3: { // double
 						double tmp;
 						if (!propStream.read<double>(tmp)) {

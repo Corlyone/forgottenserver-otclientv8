@@ -29,6 +29,7 @@
 #include "scriptmanager.h"
 #include "rsa.h"
 #include "protocollogin.h"
+#include "protocolspectator.h"
 #include "protocolstatus.h"
 #include "databasemanager.h"
 #include "scheduler.h"
@@ -283,8 +284,13 @@ void mainLoader(int, char*[], ServiceManager* services)
 
 	// Game client protocols
 	services->add<ProtocolGame>(static_cast<uint16_t>(g_config.getNumber(ConfigManager::GAME_PORT)));
+	services->add<ProtocolSpectator>(static_cast<uint16_t>(g_config.getNumber(ConfigManager::CAST_PORT)));
 	services->add<ProtocolLogin>(static_cast<uint16_t>(g_config.getNumber(ConfigManager::LOGIN_PORT)));
-
+	//Live Cast check if cast are enabled??
+	//if (g_config.getBoolean(ConfigManager::LIVE_CAST_ENABLED)) {
+		//ProtocolGame::clearLiveCastInfo();
+		//services->add<ProtocolSpectator>(g_config.getNumber(ConfigManager::CAST_PORT));
+	//}
 	// OT protocols
 	services->add<ProtocolStatus>(static_cast<uint16_t>(g_config.getNumber(ConfigManager::STATUS_PORT)));
 

@@ -105,7 +105,8 @@ TalkActionResult_t TalkActions::playerSaySpell(Player* player, SpeakClasses type
 					if (param != separator) {
 						++it;
 						continue;
-					} else {
+					}
+					else {
 						param.erase(param.begin());
 					}
 				}
@@ -114,7 +115,8 @@ TalkActionResult_t TalkActions::playerSaySpell(Player* player, SpeakClasses type
 
 		if (it->second.executeSay(player, param, type)) {
 			return TALKACTION_CONTINUE;
-		} else {
+		}
+		else {
 			return TALKACTION_BREAK;
 		}
 	}
@@ -132,6 +134,17 @@ bool TalkAction::configureEvent(const pugi::xml_node& node)
 	pugi::xml_attribute separatorAttribute = node.attribute("separator");
 	if (separatorAttribute) {
 		separator = pugi::cast<char>(separatorAttribute.value());
+	}
+
+	pugi::xml_attribute channelAttibute = node.attribute("channel");
+	if (channelAttibute) {
+		std::string channelName = asLowerCaseString(channelAttibute.as_string());
+		if (channelName == "cast") {
+			channel = CHANNEL_CAST;
+		} else {
+			std::cout << "[Error - TalkAction::configureEvent] Unknown channel name: " << channelName << std::endl;
+			return false;
+		}
 	}
 
 	words = wordsAttribute.as_string();

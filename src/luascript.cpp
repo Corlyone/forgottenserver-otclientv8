@@ -2260,6 +2260,17 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "hasSecureMode", LuaScriptInterface::luaPlayerHasSecureMode);
 	registerMethod("Player", "getFightMode", LuaScriptInterface::luaPlayerGetFightMode);
 
+	//Live Cast Methods
+	registerMethod("Player", "isLiveCasting", LuaScriptInterface::luaPlayerIsLiveCasting);
+	registerMethod("Player", "startLiveCasting", LuaScriptInterface::luaPlayerStartLiveCasting);
+	registerMethod("Player", "pauseLiveCasting", LuaScriptInterface::luaPlayerPauseLiveCasting);
+	registerMethod("Player", "stopLiveCasting", LuaScriptInterface::luaPlayerStopLiveCasting);
+	registerMethod("Player", "kickCastSpectator", LuaScriptInterface::luaPlayerKickCastSpectator);
+	registerMethod("Player", "banCastSpectator", LuaScriptInterface::luaPlayerBanCastSpectator);
+	registerMethod("Player", "unBanCastSpectator", LuaScriptInterface::luaPlayerUnBanCastSpectator);
+	registerMethod("Player", "muteCastSpectator", LuaScriptInterface::luaPlayerMuteCastSpectator);
+	registerMethod("Player", "unMuteCastSpectator", LuaScriptInterface::luaPlayerUnMuteCastSpectator);
+
 	// Monster
 	registerClass("Monster", "Creature", LuaScriptInterface::luaMonsterCreate);
 	registerMetaMethod("Monster", "__eq", LuaScriptInterface::luaUserdataCompare);
@@ -9304,6 +9315,8 @@ int LuaScriptInterface::luaPlayerSetGhostMode(lua_State* L)
 				it.second->notifyStatusChange(player, VIPSTATUS_OFFLINE);
 			}
 		}
+
+		player->stopLiveCasting();
 		IOLoginData::updateOnlineStatus(player->getGUID(), false);
 	} else {
 		for (const auto& it : g_game.getPlayers()) {
@@ -9435,6 +9448,124 @@ int LuaScriptInterface::luaPlayerGetFightMode(lua_State* L)
 	Player* player = getUserdata<Player>(L, 1);
 	if (player) {
 		lua_pushnumber(L, player->fightMode);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+//Live Cast
+int LuaScriptInterface::luaPlayerIsLiveCasting(lua_State* L)
+{
+	// player:isLiveCasting()
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		lua_pushboolean(L, player->isLiveCasting());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerStartLiveCasting(lua_State* L)
+{
+	// player:startLiveCasting([password])
+	std::string password = getString(L, 2);
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		lua_pushboolean(L, player->startLiveCasting(password));
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerPauseLiveCasting(lua_State* L)
+{
+	// player:pauseLiveCasting([reason])
+	std::string reason = getString(L, 2);
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		player->pauseLiveCasting(reason);
+		lua_pushboolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerStopLiveCasting(lua_State* L)
+{
+	// player:stopLiveCasting()
+	std::string reason = getString(L, 2);
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		player->stopLiveCasting();
+		lua_pushboolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerKickCastSpectator(lua_State* L)
+{
+	// player:kickCastSpectator(name)
+	std::string name = getString(L, 2);
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		lua_pushboolean(L, player->kickCastSpectator(name));
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerBanCastSpectator(lua_State* L)
+{
+	// player:banCastSpectator(name)
+	std::string name = getString(L, 2);
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		lua_pushboolean(L, player->banCastSpectator(name));
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerUnBanCastSpectator(lua_State* L)
+{
+	// player:unBanCastSpectator(name)
+	std::string name = getString(L, 2);
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		lua_pushboolean(L, player->unBanCastSpectator(name));
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerMuteCastSpectator(lua_State* L)
+{
+	// player:muteCastSpectator(name)
+	std::string name = getString(L, 2);
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		lua_pushboolean(L, player->muteCastSpectator(name));
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerUnMuteCastSpectator(lua_State* L)
+{
+	// player:unMuteCastSpectator(name)
+	std::string name = getString(L, 2);
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		lua_pushboolean(L, player->unMuteCastSpectator(name));
 	} else {
 		lua_pushnil(L);
 	}
